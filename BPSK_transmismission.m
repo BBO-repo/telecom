@@ -9,7 +9,7 @@ SNR_dB = -20;         % Channel SNR in dB
 
 t = 0:1/Fs:Tb-1/Fs;   % Time vector for one bit
 Ns = length(t);       % Samples per bit
-
+fading = 'rayleigh';  % Fading 'none','rayleigh','rician','nakagami','log-normal','weibull'
 %% ---------------- TRANSMITTER ---------------- %%
 % Random bits
 rng(123);                       % force seed for reproducibility
@@ -28,6 +28,48 @@ tx_signal = (symbols .* carrier);  % Complex modulated signal (Ns x Nb)
 rx_signal = awgn(tx_signal, SNR_dB, 'measured');  % Add noise to signal
 
 %% ---------------- RECEIVER ---------------- %%
+% Add Rayleigh fading - used for environments without a clear line-of-sight (e.g., urban, dense areas).
+
+switch fading
+
+  case 'none'
+    h = ones(Nb, 1);
+
+  case 'rayleigh'
+    % Generate random fading coefficients (Rayleigh distributed)
+    h = (randn(Nb, 1) + 1i*randn(Nb, 1)) / sqrt(2);  % Rayleigh fading (complex Gaussian)
+
+  case 'rician'
+    % Parameters for Rician fading
+    K = 5;  % Rician factor (ratio of line-of-sight power to scattered power)
+    h = sqrt(K / (K + 1)) + (randn(Nb, 1) + 1i*randn(Nb, 1)) / sqrt(2); % Rician fading
+
+  case 'nakagami'
+    % Parameters for Nakagami fading
+    m = 1.5;  % Nakagami fading parameter (1 for Rayleigh, >1 for stronger channels)
+    h = sqrt(m) * (randn(Nb, 1) + 1i*randn(Nb, 1)) / sqrt(2);  % Nakagami fading
+
+  case 'log-normal'
+    % Parameters for Log-Normal Shadowing
+    mu    = 0;      % Mean shadowing effect (in dB)
+    sigma = 3;      % Standard deviation (in dB)
+    h     = 10^(randn(Nb, 1) * sigma / 10);  % Log-normal fading factor
+
+  case 'weibull'
+    % Parameters for Weibull fading
+    k = 1.5;  % Shape parameter
+    lambda = 1; % Scale parameter
+
+    % Generate Weibull fading coefficients
+    h = (randn(Nb, 1) * lambda) .^ (1 / k);
+
+  otherwise
+    h = ones(Nb, 1);
+
+endswitch
+
+faded_signal = tx_signal .* h; % Apply fading to each symbol
+
 % Coherent demodulation (multiply by the complex conjugate of the carrier)
 demod = rx_signal .* conj(carrier);
 
