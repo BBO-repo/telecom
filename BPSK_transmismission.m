@@ -4,12 +4,13 @@ clc; clear; close all;
 Fs     = 10000;       % Sampling frequency (Hz)
 Fc     = 1000;        % Carrier frequency (Hz)
 Tb     = 0.01;        % Bit duration (seconds)
-Nb     = 20;          % Number of bits to transmit
+Nb     = 35;          % Number of bits to transmit
 SNR_dB = -20;         % Channel SNR in dB
 
 t = 0:1/Fs:Tb-1/Fs;   % Time vector for one bit
 Ns = length(t);       % Samples per bit
 fading = 'rayleigh';  % Fading 'none','rayleigh','rician','nakagami','log-normal','weibull'
+
 %% ---------------- TRANSMITTER ---------------- %%
 % Random bits
 rng(123);                       % force seed for reproducibility
@@ -28,8 +29,6 @@ tx_signal = (symbols .* carrier);  % Complex modulated signal (Ns x Nb)
 rx_signal = awgn(tx_signal, SNR_dB, 'measured');  % Add noise to signal
 
 %% ---------------- RECEIVER ---------------- %%
-% Add Rayleigh fading - used for environments without a clear line-of-sight (e.g., urban, dense areas).
-
 switch fading
 
   case 'none'
