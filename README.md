@@ -6,39 +6,6 @@ A project for developing and optimizing Layer 1 (Physical Layer) algorithms for 
 
 This project focuses on implementing signal processing algorithms for physical layer communication systems, including modulation, demodulation, channel estimation, equalization, and synchronization.
 
-## Development Environment
-
-### Setup
-
-1. **Build the Docker container**:
-   ```bash
-   docker build -t telecoms-dev .
-   ```
-
-2. **Run the container** (with X11 forwarding for GUI):
-   ```bash
-   docker run -it --net=host \
-     -e DISPLAY=$DISPLAY \
-     -e QT_X11_NO_MITSHM=1 \
-     -v /tmp/.X11-unix:/tmp/.X11-unix \
-     --privileged \
-     -v $(pwd):/workspace \
-     telecoms-dev
-   ```
-
-3. **Or use VS Code Dev Containers**:
-   - Open the project in VS Code
-   - Use the "Reopen in Container" command
-   - The `.devcontainer.json` will configure everything automatically
-
-### Verify Installation
-
-Inside the container, verify Octave and packages:
-```octave
-octave --version
-pkg list
-```
-
 ## Project Structure
 ```
 ├── src/                              # Source code
@@ -89,14 +56,12 @@ pkg list
 │   ├── 07_ofdm_full_sync.m           # Level 7: OFDM with advanced sync
 │   ├── 08_complete_ofdm_turbo.m      # Level 8: Complete OFDM with turbo codes
 │   ├── setup_paths.m                 # Path setup helper
-│   └── examples_README.md            # Examples documentation
+│   └── README.md                     # Examples documentation
 ├── Dockerfile                        # Container definition
 └── README.md                         # Project overview (this file)
 ```
 
-## Quick Start
-
-### Running Example Scripts
+### Running Scripts
 
 The `src/` directory contains 8 progressive demonstration scripts showcasing increasing complexity:
 
@@ -122,4 +87,38 @@ The `src/` directory contains 8 progressive demonstration scripts showcasing inc
 - **Level 6** (`06_ofdm_channel_estimation.m`): OFDM with channel estimation
 - **Level 7** (`07_ofdm_full_sync.m`): OFDM with advanced synchronization
 - **Level 8** (`08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
+
+## Docker Development Environment
+
+### Setup
+
+1. **Build the Docker container**:
+   ```bash
+   docker build -t telecoms-dev .
+   ```
+
+2. **Run the container** (with X11 forwarding for GUI):
+   ```bash
+   docker run -it --net=host \
+     -e DISPLAY=$DISPLAY \
+     -e QT_X11_NO_MITSHM=1 \
+     -v /tmp/.X11-unix:/tmp/.X11-unix \
+     --privileged \
+     -v $(pwd):/workspace \
+     telecoms-dev
+   ```
+
+3. **Or use VS Code Dev Containers**:
+   - Open the project in VS Code
+   - Use the "Reopen in Container" command
+   - The `.devcontainer.json` will configure everything automatically
+
+### Verify Installation
+
+Inside the container, verify Octave and packages:
+```octave
+octave --version
+pkg list
+```
+
 
