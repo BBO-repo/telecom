@@ -15,7 +15,7 @@ clc;
 %% Configuration Parameters
 num_bits = 1000;               % Number of bits to transmit
 snr_db_range = 0:2:15;         % SNR range in dB
-num_trials = 50;               % Number of trials per SNR point
+num_trials = 10;               % Number of trials per SNR point
 
 % Reed-Solomon code parameters
 n = 7;                         % Codeword length
@@ -65,17 +65,46 @@ for snr_idx = 1:length(snr_db_range)
         total_bits_uncoded = total_bits_uncoded + length(tx_bits);
 
         %% Coded System
-        % Simplified coding: use repetition code for demonstration
-        % In practice, would use proper RS encoding
-        tx_bits_coded = [];
-        % Simple repetition: repeat each bit (n/k) times
-        rep_factor = ceil(n/k);
-        for i = 1:length(tx_bits)
-            tx_bits_coded = [tx_bits_coded, repmat(tx_bits(i), 1, rep_factor)];
+        % Convert bits to symbols for RS encoding
+        % For (7,4) RS code in GF(8), each symbol is 3 bits (2^3 = 8)
+        bits_per_symbol = 3;  % GF(2^3) = GF(8)
+        max_symbol_value = 2^bits_per_symbol - 1;  % 0-7
+        
+        % Pad bits to make length multiple of (k * bits_per_symbol)
+        bits_per_block = k * bits_per_symbol;  % 4 symbols * 3 bits = 12 bits per block
+        num_blocks = ceil(length(tx_bits) / bits_per_block);
+        tx_bits_padded = [tx_bits, zeros(1, num_blocks * bits_per_block - length(tx_bits))];
+        
+        % Convert bits to symbols (groups of 3 bits -> symbol 0-7)
+        num_symbols = length(tx_bits_padded) / bits_per_symbol;
+        tx_rs_symbols = zeros(1, num_symbols);
+        for i = 1:num_symbols
+            bit_start = (i-1) * bits_per_symbol + 1;
+            bit_end = i * bits_per_symbol;
+            bit_group = tx_bits_padded(bit_start:bit_end);
+            % Convert binary to decimal (0-7)
+            tx_rs_symbols(i) = sum(bit_group .* 2.^(bits_per_symbol-1:-1:0));
         end
-
-        % Truncate to make length multiple of 2 for QPSK
-        tx_bits_coded = tx_bits_coded(1:floor(length(tx_bits_coded)/2)*2);
+        
+        % Reed-Solomon encoding
+        tx_rs_encoded = rs_encode(tx_rs_symbols, n, k);
+        
+        % Convert encoded symbols back to bits
+        tx_bits_coded = [];
+        for i = 1:length(tx_rs_encoded)
+            symbol = tx_rs_encoded(i);
+            % Convert decimal to binary (MSB first, ensure 3 bits)
+            symbol_bits = zeros(1, bits_per_symbol);
+            for j = 1:bits_per_symbol
+                symbol_bits(j) = mod(floor(symbol / 2^(bits_per_symbol - j)), 2);
+            end
+            tx_bits_coded = [tx_bits_coded, symbol_bits];
+        end
+        
+        % Pad to make length multiple of 2 for QPSK (2 bits per QPSK symbol)
+        if mod(length(tx_bits_coded), 2) ~= 0
+            tx_bits_coded = [tx_bits_coded, 0];
+        end
 
         % QPSK modulation
         tx_symbols_coded = qpsk_modulate(tx_bits_coded);
@@ -85,16 +114,38 @@ for snr_idx = 1:length(snr_db_range)
 
         % Demodulation
         rx_bits_coded = qpsk_demodulate(rx_symbols_coded);
-
-        % Simple decoding: majority vote
-        rx_bits_decoded = zeros(1, length(tx_bits));
-        for i = 1:length(tx_bits)
-            start_idx = (i-1)*rep_factor + 1;
-            end_idx = min(i*rep_factor, length(rx_bits_coded));
-            if end_idx >= start_idx
-                rx_bits_decoded(i) = mode(rx_bits_coded(start_idx:end_idx));
-            end
+        
+        % Convert bits back to RS symbols
+        % Truncate to multiple of bits_per_symbol
+        rx_bits_coded = rx_bits_coded(1:floor(length(rx_bits_coded)/bits_per_symbol)*bits_per_symbol);
+        num_rx_symbols = length(rx_bits_coded) / bits_per_symbol;
+        rx_rs_encoded = zeros(1, num_rx_symbols);
+        for i = 1:num_rx_symbols
+            bit_start = (i-1) * bits_per_symbol + 1;
+            bit_end = i * bits_per_symbol;
+            bit_group = rx_bits_coded(bit_start:bit_end);
+            % Convert binary to decimal, clamp to valid range
+            symbol_value = sum(bit_group .* 2.^(bits_per_symbol-1:-1:0));
+            rx_rs_encoded(i) = min(max(symbol_value, 0), max_symbol_value);
         end
+        
+        % Reed-Solomon decoding
+        rx_rs_decoded = rs_decode(rx_rs_encoded, n, k);
+        
+        % Convert decoded symbols back to bits
+        rx_bits_decoded = [];
+        for i = 1:length(rx_rs_decoded)
+            symbol = rx_rs_decoded(i);
+            % Convert decimal to binary (MSB first, ensure 3 bits)
+            symbol_bits = zeros(1, bits_per_symbol);
+            for j = 1:bits_per_symbol
+                symbol_bits(j) = mod(floor(symbol / 2^(bits_per_symbol - j)), 2);
+            end
+            rx_bits_decoded = [rx_bits_decoded, symbol_bits];
+        end
+        
+        % Truncate to original length
+        rx_bits_decoded = rx_bits_decoded(1:length(tx_bits));
 
         % Count errors
         errors_coded = errors_coded + sum(tx_bits ~= rx_bits_decoded);

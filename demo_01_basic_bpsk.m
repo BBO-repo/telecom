@@ -13,9 +13,9 @@ close all;
 clc;
 
 %% Configuration Parameters
-num_bits = 100000;              % Number of bits to transmit
-ebno_db_range = -20:2:10;      % Eb/No range in dB for BER curve
-num_trials = 100;              % Number of trials per Eb/No point
+num_bits = 1000;              % Number of bits to transmit
+ebno_db_range = -20:2:10;     % Eb/No range in dB for BER curve
+num_trials = 10;              % Number of trials per Eb/No point
 
 % Add paths to functions
 addpath('./utils');
