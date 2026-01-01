@@ -19,6 +19,15 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 ## Project Structure
 
 ```
+├── 01_basic_bpsk.m               # Level 1: Basic BPSK system
+├── 02_qpsk_with_reed_solomon.m   # Level 2: QPSK with error correction
+├── 03_16qam_with_lms_equalizer.m # Level 3: 16-QAM with LMS equalizer
+├── 04_sc_sync_qpsk.m             # Level 4: QPSK with synchronization
+├── 05_basic_ofdm.m               # Level 5: Basic OFDM system
+├── 06_ofdm_channel_estimation.m  # Level 6: OFDM with channel estimation
+├── 07_ofdm_full_sync.m           # Level 7: OFDM with advanced sync
+├── 08_complete_ofdm_turbo.m      # Level 8: Complete OFDM with turbo codes
+├── setup_paths.m                 # Path setup helper
 ├── algorithms/                   # Core algorithm implementations
 │   ├── modulation/               # Modulation schemes
 │   │   ├── bpsk_modulate.m       # BPSK modulation
@@ -57,15 +66,6 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 │   ├── calculate_evm.m           # EVM calculation
 │   ├── plot_constellation.m      # Constellation plotting
 │   └── plot_ber_curve.m          # BER curve plotting
-├── 01_basic_bpsk.m               # Level 1: Basic BPSK system
-├── 02_qpsk_with_reed_solomon.m   # Level 2: QPSK with error correction
-├── 03_16qam_with_lms_equalizer.m # Level 3: 16-QAM with LMS equalizer
-├── 04_sc_sync_qpsk.m             # Level 4: QPSK with synchronization
-├── 05_basic_ofdm.m               # Level 5: Basic OFDM system
-├── 06_ofdm_channel_estimation.m  # Level 6: OFDM with channel estimation
-├── 07_ofdm_full_sync.m           # Level 7: OFDM with advanced sync
-├── 08_complete_ofdm_turbo.m      # Level 8: Complete OFDM with turbo codes
-├── setup_paths.m                 # Path setup helper
 ├── Dockerfile                    # Container definition
 └── README.md                     # This file
 ```
