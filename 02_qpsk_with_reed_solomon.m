@@ -13,7 +13,7 @@ close all;
 clc;
 
 %% Configuration Parameters
-num_bits = 10000;              % Number of bits to transmit
+num_bits = 1000;               % Number of bits to transmit
 snr_db_range = 0:2:15;         % SNR range in dB
 num_trials = 50;               % Number of trials per SNR point
 
@@ -43,27 +43,27 @@ for snr_idx = 1:length(snr_db_range)
     errors_coded = 0;
     total_bits_uncoded = 0;
     total_bits_coded = 0;
-    
+
     % Adjust SNR for coded case (coding reduces effective SNR)
     snr_coded_db = snr_db + 10*log10(code_rate);
-    
+
     for trial = 1:num_trials
         %% Uncoded System
         tx_bits = generate_data(num_bits);
-        
+
         % QPSK modulation
         tx_symbols = qpsk_modulate(tx_bits);
-        
+
         % Channel
         rx_symbols = add_awgn(tx_symbols, snr_db);
-        
+
         % Demodulation
         rx_bits_uncoded = qpsk_demodulate(rx_symbols);
-        
+
         % Count errors
         errors_uncoded = errors_uncoded + sum(tx_bits ~= rx_bits_uncoded);
         total_bits_uncoded = total_bits_uncoded + length(tx_bits);
-        
+
         %% Coded System
         % Simplified coding: use repetition code for demonstration
         % In practice, would use proper RS encoding
@@ -73,19 +73,19 @@ for snr_idx = 1:length(snr_db_range)
         for i = 1:length(tx_bits)
             tx_bits_coded = [tx_bits_coded, repmat(tx_bits(i), 1, rep_factor)];
         end
-        
+
         % Truncate to make length multiple of 2 for QPSK
         tx_bits_coded = tx_bits_coded(1:floor(length(tx_bits_coded)/2)*2);
-        
+
         % QPSK modulation
         tx_symbols_coded = qpsk_modulate(tx_bits_coded);
-        
+
         % Channel (with adjusted SNR)
         rx_symbols_coded = add_awgn(tx_symbols_coded, snr_coded_db);
-        
+
         % Demodulation
         rx_bits_coded = qpsk_demodulate(rx_symbols_coded);
-        
+
         % Simple decoding: majority vote
         rx_bits_decoded = zeros(1, length(tx_bits));
         for i = 1:length(tx_bits)
@@ -95,12 +95,12 @@ for snr_idx = 1:length(snr_db_range)
                 rx_bits_decoded(i) = mode(rx_bits_coded(start_idx:end_idx));
             end
         end
-        
+
         % Count errors
         errors_coded = errors_coded + sum(tx_bits ~= rx_bits_decoded);
         total_bits_coded = total_bits_coded + length(tx_bits);
     end
-    
+
     % Calculate BERs
     ber_uncoded(snr_idx) = errors_uncoded / total_bits_uncoded;
     if total_bits_coded > 0
@@ -108,7 +108,7 @@ for snr_idx = 1:length(snr_db_range)
     else
         ber_coded(snr_idx) = 1;
     end
-    
+
     fprintf('SNR = %d dB: Uncoded BER = %.2e, Coded BER = %.2e\n', ...
         snr_db, ber_uncoded(snr_idx), ber_coded(snr_idx));
 end
@@ -157,10 +157,14 @@ grid on;
 xlabel('In-Phase (I)', 'FontSize', 12);
 ylabel('Quadrature (Q)', 'FontSize', 12);
 title('QPSK Constellation (SNR = 10 dB)', 'FontSize', 14, 'FontWeight', 'bold');
-legend('Received', 'Transmitted', 'Location', 'best');
+legend('Received', 'Transmitted', 'Location', 'northeast');
 axis equal;
 
-sgtitle('Level 2: QPSK with Reed-Solomon Coding', 'FontSize', 16, 'FontWeight', 'bold');
+annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
+           'String', 'QPSK with Reed-Solomon Coding', ...
+           'FontSize', 16, 'FontWeight', 'bold', ...
+           'HorizontalAlignment', 'center', ...
+           'EdgeColor', 'none');
 
 fprintf('\n=== Simulation Complete ===\n');
 

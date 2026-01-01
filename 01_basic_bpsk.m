@@ -33,33 +33,33 @@ for snr_idx = 1:length(snr_db_range)
     snr_db = snr_db_range(snr_idx);
     errors = 0;
     total_bits = 0;
-    
+
     % Multiple trials for better statistics
     for trial = 1:num_trials
         %% Transmitter
         % Generate random binary data
         tx_bits = generate_data(num_bits);
-        
+
         % BPSK modulation
         tx_symbols = bpsk_modulate(tx_bits);
-        
+
         %% Channel
         % Add AWGN
         rx_symbols = add_awgn(tx_symbols, snr_db);
-        
+
         %% Receiver
         % BPSK demodulation
         rx_bits = bpsk_demodulate(rx_symbols);
-        
+
         %% Performance Analysis
         % Calculate errors
         errors = errors + sum(tx_bits ~= rx_bits);
         total_bits = total_bits + length(tx_bits);
     end
-    
+
     % Calculate BER
     ber_results(snr_idx) = errors / total_bits;
-    
+
     fprintf('SNR = %d dB, BER = %.2e\n', snr_db, ber_results(snr_idx));
 end
 
@@ -94,10 +94,13 @@ grid on;
 xlabel('In-Phase (I)', 'FontSize', 12);
 ylabel('Quadrature (Q)', 'FontSize', 12);
 title('BPSK Constellation (SNR = 10 dB)', 'FontSize', 14, 'FontWeight', 'bold');
-legend('Received', 'Transmitted', 'Location', 'best');
+legend('Received', 'Transmitted', 'Location', 'northeast');
 axis equal;
-
-sgtitle('Level 1: Basic BPSK System', 'FontSize', 16, 'FontWeight', 'bold');
+annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
+           'String', 'Basic BPSK System', ...
+           'FontSize', 16, 'FontWeight', 'bold', ...
+           'HorizontalAlignment', 'center', ...
+           'EdgeColor', 'none');
 
 fprintf('\n=== Simulation Complete ===\n');
 fprintf('Final BER at %d dB SNR: %.2e\n', snr_db_range(end), ber_results(end));

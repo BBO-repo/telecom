@@ -104,7 +104,7 @@ grid on;
 xlabel('Sample Index', 'FontSize', 11);
 ylabel('Correlation', 'FontSize', 11);
 title('Timing Synchronization', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Correlation', 'Estimated Start', 'True Start', 'Location', 'best');
+legend('Correlation', 'Estimated Start', 'True Start', 'Location', 'northeast');
 
 % Constellation: With frequency offset
 subplot(2, 3, 2);
@@ -125,7 +125,7 @@ grid on;
 xlabel('In-Phase (I)', 'FontSize', 11);
 ylabel('Quadrature (Q)', 'FontSize', 11);
 title('After Frequency Correction', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Received', 'Transmitted', 'Location', 'best');
+legend('Received', 'Transmitted', 'Location', 'northeast');
 axis equal;
 
 % Frequency offset estimation error
@@ -156,10 +156,13 @@ grid on;
 xlabel('Sample Index', 'FontSize', 11);
 ylabel('Correlation', 'FontSize', 11);
 title('Timing Correlation (Detail)', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Correlation', 'Estimated Start', 'Location', 'best');
+legend('Correlation', 'Estimated Start', 'Location', 'northeast');
 
-sgtitle('Level 4: QPSK with Timing and Frequency Synchronization', ...
-    'FontSize', 16, 'FontWeight', 'bold');
+annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
+           'String', 'QPSK with Timing and Frequency Synchronization', ...
+           'FontSize', 16, 'FontWeight', 'bold', ...
+           'HorizontalAlignment', 'center', ...
+           'EdgeColor', 'none');
 
 fprintf('\n=== Simulation Complete ===\n');
 

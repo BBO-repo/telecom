@@ -124,7 +124,7 @@ grid on;
 xlabel('In-Phase (I)', 'FontSize', 11);
 ylabel('Quadrature (Q)', 'FontSize', 11);
 title('Equalized Output', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Received', 'Ideal', 'Location', 'best');
+legend('Received', 'Ideal', 'Location', 'northeast');
 axis equal;
 
 % Constellation: Ideal
@@ -160,7 +160,11 @@ xlabel('Tap Index', 'FontSize', 11);
 ylabel('|Channel|', 'FontSize', 11);
 title('Channel Impulse Response', 'FontSize', 12, 'FontWeight', 'bold');
 
-sgtitle('Level 3: 16-QAM with LMS Adaptive Equalization', 'FontSize', 16, 'FontWeight', 'bold');
+annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
+           'String', '16-QAM with LMS Adaptive Equalization', ...
+           'FontSize', 16, 'FontWeight', 'bold', ...
+           'HorizontalAlignment', 'center', ...
+           'EdgeColor', 'none');
 
 fprintf('\n=== Simulation Complete ===\n');
 
