@@ -15,6 +15,7 @@ The scripts demonstrate practical implementation of:
 
 Each script is self-contained, well-documented, and includes comprehensive visualizations and performance metrics.
 
+
 ## Project Structure
 
 ```
@@ -96,11 +97,10 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 - **Level 7** (`07_ofdm_full_sync.m`): OFDM with advanced synchronization
 - **Level 8** (`08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
 
-## Demonstration Scripts
+## Demonstration Scripts Details
 
 ### Level 1: Basic Single-Carrier BPSK System
 **File**: `01_basic_bpsk.m`  
-**Estimated Runtime**: ~30 seconds
 
 **Features**:
 - Binary data generation
@@ -110,16 +110,10 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 - Theoretical BER comparison
 - Constellation visualization
 
-**Run**:
-```bash
-octave 01_basic_bpsk.m
-```
-
 ---
 
 ### Level 2: QPSK with Basic Error Correction
-**File**: `02_qpsk_with_reed_solomon.m`  
-**Estimated Runtime**: ~2 minutes
+**File**: `02_qpsk_with_reed_solomon.m`
 
 **Features**:
 - QPSK modulation/demodulation
@@ -128,16 +122,10 @@ octave 01_basic_bpsk.m
 - BER comparison: coded vs uncoded
 - Coding gain analysis
 
-**Run**:
-```bash
-octave 02_qpsk_with_reed_solomon.m
-```
-
 ---
 
 ### Level 3: 16-QAM with Adaptive Equalization
-**File**: `03_16qam_with_lms_equalizer.m`  
-**Estimated Runtime**: ~1 minute
+**File**: `03_16qam_with_lms_equalizer.m`
 
 **Features**:
 - 16-QAM modulation/demodulation
@@ -147,16 +135,10 @@ octave 02_qpsk_with_reed_solomon.m
 - Equalizer convergence analysis
 - EVM measurement
 
-**Run**:
-```bash
-octave 03_16qam_with_lms_equalizer.m
-```
-
 ---
 
 ### Level 4: Single-Carrier QPSK with Synchronization
 **File**: `04_sc_sync_qpsk.m`  
-**Estimated Runtime**: ~1 minute
 
 **Features**:
 - QPSK with preamble
@@ -166,16 +148,10 @@ octave 03_16qam_with_lms_equalizer.m
 - Frame synchronization
 - Performance under synchronization errors
 
-**Run**:
-```bash
-octave 04_sc_sync_qpsk.m
-```
-
 ---
 
 ### Level 5: Basic OFDM System
 **File**: `05_basic_ofdm.m`  
-**Estimated Runtime**: ~3 minutes
 
 **Features**:
 - OFDM modulation (IFFT)
@@ -185,16 +161,10 @@ octave 04_sc_sync_qpsk.m
 - AWGN channel
 - BER vs SNR performance
 
-**Run**:
-```bash
-octave 05_basic_ofdm.m
-```
-
 ---
 
 ### Level 6: OFDM with Channel Estimation & Equalization
 **File**: `06_ofdm_channel_estimation.m`  
-**Estimated Runtime**: ~2 minutes
 
 **Features**:
 - OFDM with pilot symbols
@@ -204,16 +174,10 @@ octave 05_basic_ofdm.m
 - Pilot interpolation
 - Comparison of estimation methods
 
-**Run**:
-```bash
-octave 06_ofdm_channel_estimation.m
-```
-
 ---
 
 ### Level 7: OFDM with Advanced Synchronization
 **File**: `07_ofdm_full_sync.m`  
-**Estimated Runtime**: ~2 minutes
 
 **Features**:
 - Schmidl-Cox synchronization algorithm
@@ -223,16 +187,9 @@ octave 06_ofdm_channel_estimation.m
 - Full receiver chain with sync errors
 - Robust synchronization under impairments
 
-**Run**:
-```bash
-octave 07_ofdm_full_sync.m
-```
-
----
 
 ### Level 8: Complete OFDM System with Turbo Codes
 **File**: `08_complete_ofdm_turbo.m`  
-**Estimated Runtime**: ~5 minutes
 
 **Features**:
 - Full OFDM system with 64-QAM
@@ -242,34 +199,6 @@ octave 07_ofdm_full_sync.m
 - Full synchronization chain
 - Comprehensive performance analysis
 - Comparison with theoretical limits
-
-**Run**:
-```bash
-octave 08_complete_ofdm_turbo.m
-```
-
----
-
-## Path Setup
-
-Each script automatically adds the necessary paths. If you encounter path issues:
-
-**Option 1**: Use the setup script:
-```octave
-run setup_paths.m
-octave 01_basic_bpsk.m
-```
-
-**Option 2**: Manually add paths:
-```octave
-addpath('./utils');
-addpath('./algorithms/modulation');
-addpath('./algorithms/demodulation');
-addpath('./algorithms/coding');
-addpath('./algorithms/equalization');
-addpath('./algorithms/sync');
-addpath('./algorithms/channel');
-```
 
 ## Docker Development Environment
 
@@ -303,14 +232,6 @@ Inside the container, verify Octave and packages:
 octave --version
 pkg list
 ```
-
-## Prerequisites
-
-### Required Software
-- **GNU Octave** (recommended version 5.0 or later)
-- **Octave packages** (usually included):
-  - `octave-signal`
-  - `octave-communications` (optional, for advanced features)
 
 ## Script Structure
 
@@ -353,54 +274,6 @@ Most parameters can be modified at the top of each script:
 - **Better statistics**: Increase `num_trials` or simulation length
 - **Higher accuracy**: Use more samples, longer sequences
 
-## Troubleshooting
-
-### Common Issues
-
-**1. Path Errors**
-```
-Error: 'function_name' undefined
-```
-**Solution**: Ensure you're running from the project root directory, or use `setup_paths.m`
-
-**2. Plot/GUI Issues**
-```
-Error: gnuplot not found
-```
-**Solution**: Install gnuplot or set graphics toolkit:
-```octave
-graphics_toolkit('fltk');  % or 'gnuplot'
-```
-
-**3. Slow Execution**
-- Reduce `num_trials` or `num_bits`
-- Use fewer SNR points in `snr_db_range`
-- Reduce OFDM symbols or FFT size
-
-**4. Memory Issues**
-- Reduce simulation size
-- Process data in smaller blocks
-- Clear variables: `clear` between iterations
-
-**5. NaN or Inf Values**
-- Check SNR values (not too high/low)
-- Verify channel coefficients (not zero)
-- Check for division by zero in algorithms
-
-## Performance Notes
-
-### Simulation Time Estimates
-- **Level 1**: ~30 seconds
-- **Level 2**: ~2 minutes
-- **Level 3**: ~1 minute
-- **Level 4**: ~1 minute
-- **Level 5**: ~3 minutes
-- **Level 6**: ~2 minutes
-- **Level 7**: ~2 minutes
-- **Level 8**: ~5 minutes
-
-*Times are approximate and depend on system performance and parameter settings.*
-
 ### Expected BER Values
 Typical BER ranges for reference:
 - **BPSK at 10 dB SNR**: ~10^-3
@@ -416,30 +289,9 @@ Some algorithms use simplified implementations for educational purposes:
 - **Turbo codes**: Simplified iterative decoding (Level 8)
 - **Channel models**: Simplified multipath representation
 
-For production use, consider using:
-- Octave Communications Toolbox for advanced coding
-- More sophisticated channel models
-- Industry-standard implementations
-
 ### Theoretical Comparisons
 Scripts compare results with theoretical limits where applicable:
 - **BPSK**: BER = 0.5 * erfc(√SNR)
 - **QPSK**: Similar to BPSK (same power efficiency)
 - **16-QAM/64-QAM**: Approximate theoretical formulas
 
-## References
-
-### Key Algorithms Demonstrated
-1. **BPSK/QPSK Modulation**: Basic digital modulation
-2. **QAM**: Higher-order constellations
-3. **OFDM**: Multi-carrier transmission
-4. **LMS Equalization**: Adaptive filtering
-5. **Channel Estimation**: LS, MMSE methods
-6. **Synchronization**: Timing and frequency recovery
-7. **Error Correction**: Block and convolutional codes
-
-### Recommended Reading
-- Proakis & Salehi: "Digital Communications"
-- Tse & Viswanath: "Fundamentals of Wireless Communication"
-- 3GPP specifications (for 5G/LTE algorithms)
-- IEEE 802.11 standards (for Wi-Fi OFDM)
