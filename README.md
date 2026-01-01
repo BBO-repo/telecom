@@ -19,14 +19,14 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 ## Project Structure
 
 ```
-├── 01_basic_bpsk.m               # Level 1: Basic BPSK system
-├── 02_qpsk_with_reed_solomon.m   # Level 2: QPSK with error correction
-├── 03_16qam_with_lms_equalizer.m # Level 3: 16-QAM with LMS equalizer
-├── 04_sc_sync_qpsk.m             # Level 4: QPSK with synchronization
-├── 05_basic_ofdm.m               # Level 5: Basic OFDM system
-├── 06_ofdm_channel_estimation.m  # Level 6: OFDM with channel estimation
-├── 07_ofdm_full_sync.m           # Level 7: OFDM with advanced sync
-├── 08_complete_ofdm_turbo.m      # Level 8: Complete OFDM with turbo codes
+├── demo_01_basic_bpsk.m               # Level 1: Basic BPSK system
+├── demo_02_qpsk_with_reed_solomon.m   # Level 2: QPSK with error correction
+├── demo_03_16qam_with_lms_equalizer.m # Level 3: 16-QAM with LMS equalizer
+├── demo_04_sc_sync_qpsk.m             # Level 4: QPSK with synchronization
+├── demo_05_basic_ofdm.m               # Level 5: Basic OFDM system
+├── demo_06_ofdm_channel_estimation.m  # Level 6: OFDM with channel estimation
+├── demo_07_ofdm_full_sync.m           # Level 7: OFDM with advanced sync
+├── demo_08_complete_ofdm_turbo.m      # Level 8: Complete OFDM with turbo codes
 ├── setup_paths.m                 # Path setup helper
 ├── algorithms/                   # Core algorithm implementations
 │   ├── modulation/               # Modulation schemes
@@ -78,7 +78,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 1. Run any demonstration script directly:
    ```bash
-   octave 01_basic_bpsk.m
+   octave demo_01_basic_bpsk.m
    ```
 
 2. Each script automatically adds the necessary paths. If you encounter path issues, use:
@@ -88,19 +88,19 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 ### Available Examples
 
-- **Level 1** (`01_basic_bpsk.m`): Basic BPSK system with AWGN channel
-- **Level 2** (`02_qpsk_with_reed_solomon.m`): QPSK with error correction
-- **Level 3** (`03_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
-- **Level 4** (`04_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
-- **Level 5** (`05_basic_ofdm.m`): Basic OFDM system
-- **Level 6** (`06_ofdm_channel_estimation.m`): OFDM with channel estimation
-- **Level 7** (`07_ofdm_full_sync.m`): OFDM with advanced synchronization
-- **Level 8** (`08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
+- **Level 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
+- **Level 2** (`demo_02_qpsk_with_reed_solomon.m`): QPSK with error correction
+- **Level 3** (`demo_03_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
+- **Level 4** (`demo_04_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
+- **Level 5** (`demo_05_basic_ofdm.m`): Basic OFDM system
+- **Level 6** (`demo_06_ofdm_channel_estimation.m`): OFDM with channel estimation
+- **Level 7** (`demo_07_ofdm_full_sync.m`): OFDM with advanced synchronization
+- **Level 8** (`demo_08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
 
 ## Demonstration Scripts Details
 
 ### Level 1: Basic Single-Carrier BPSK System
-**File**: `01_basic_bpsk.m`  
+**File**: `demo_01_basic_bpsk.m`  
 
 **Features**:
 - Binary data generation
@@ -113,7 +113,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 ---
 
 ### Level 2: QPSK with Basic Error Correction
-**File**: `02_qpsk_with_reed_solomon.m`
+**File**: `demo_02_qpsk_with_reed_solomon.m`
 
 **Features**:
 - QPSK modulation/demodulation
@@ -125,7 +125,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 ---
 
 ### Level 3: 16-QAM with Adaptive Equalization
-**File**: `03_16qam_with_lms_equalizer.m`
+**File**: `demo_03_16qam_with_lms_equalizer.m`
 
 **Features**:
 - 16-QAM modulation/demodulation
@@ -138,7 +138,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 ---
 
 ### Level 4: Single-Carrier QPSK with Synchronization
-**File**: `04_sc_sync_qpsk.m`  
+**File**: `demo_04_sc_sync_qpsk.m`  
 
 **Features**:
 - QPSK with preamble
@@ -151,7 +151,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 ---
 
 ### Level 5: Basic OFDM System
-**File**: `05_basic_ofdm.m`  
+**File**: `demo_05_basic_ofdm.m`  
 
 **Features**:
 - OFDM modulation (IFFT)
@@ -164,7 +164,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 ---
 
 ### Level 6: OFDM with Channel Estimation & Equalization
-**File**: `06_ofdm_channel_estimation.m`  
+**File**: `demo_06_ofdm_channel_estimation.m`  
 
 **Features**:
 - OFDM with pilot symbols
@@ -177,7 +177,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 ---
 
 ### Level 7: OFDM with Advanced Synchronization
-**File**: `07_ofdm_full_sync.m`  
+**File**: `demo_07_ofdm_full_sync.m`  
 
 **Features**:
 - Schmidl-Cox synchronization algorithm
@@ -189,7 +189,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 
 ### Level 8: Complete OFDM System with Turbo Codes
-**File**: `08_complete_ofdm_turbo.m`  
+**File**: `demo_08_complete_ofdm_turbo.m`  
 
 **Features**:
 - Full OFDM system with 64-QAM

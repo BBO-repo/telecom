@@ -19,7 +19,7 @@ cp_length = 16;                % Cyclic prefix length
 M = 16;                        % 16-QAM modulation
 num_ofdm_symbols = 100;        % Number of OFDM symbols
 snr_db_range = 0:2:20;         % SNR range for BER curve
-num_trials = 50;               % Trials per SNR point
+num_trials = 10;               % Trials per SNR point
 
 % Add paths
 addpath('./utils');
@@ -40,43 +40,43 @@ for snr_idx = 1:length(snr_db_range)
     snr_db = snr_db_range(snr_idx);
     errors = 0;
     total_bits = 0;
-    
+
     for trial = 1:num_trials
         %% Transmitter
         % Generate random bits
         bits_per_symbol = log2(M) * N;  % Bits per OFDM symbol
         tx_bits = generate_data(num_ofdm_symbols * bits_per_symbol);
-        
+
         % QAM modulation
         tx_qam_symbols = qam_modulate(tx_bits, M);
-        
+
         % Reshape into OFDM symbols (frequency domain)
         freq_symbols = reshape(tx_qam_symbols, N, num_ofdm_symbols);
-        
+
         % OFDM modulation (IFFT + CP)
         tx_signal = ofdm_modulate(freq_symbols, cp_length);
-        
+
         %% Channel
         % Add AWGN
         rx_signal = add_awgn(tx_signal, snr_db);
-        
+
         %% Receiver
         % OFDM demodulation (remove CP + FFT)
         rx_freq_symbols = ofdm_demodulate(rx_signal, N, cp_length);
-        
+
         % Reshape to vector
         rx_qam_symbols = rx_freq_symbols(:);
-        
+
         % QAM demodulation
         rx_bits = qam_demodulate(rx_qam_symbols, M);
-        
+
         %% Performance Analysis
         % Calculate errors
         min_length = min(length(tx_bits), length(rx_bits));
         errors = errors + sum(tx_bits(1:min_length) ~= rx_bits(1:min_length));
         total_bits = total_bits + min_length;
     end
-    
+
     % Calculate BER
     ber_results(snr_idx) = errors / total_bits;
     fprintf('SNR = %d dB, BER = %.2e\n', snr_db, ber_results(snr_idx));
