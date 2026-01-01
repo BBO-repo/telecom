@@ -5,6 +5,13 @@
 %
 %   Usage: run setup_paths.m or addpath('setup_paths.m'); setup_paths
 
+% SETUP_PATHS Add all necessary paths for running demonstration scripts
+%
+%   Run this script from the project root directory to add all required paths
+%   to your Octave path.
+%
+%   Usage: run setup_paths.m or addpath('setup_paths.m'); setup_paths
+
 % Get the directory where this script is located
 script_dir = fileparts(mfilename('fullpath'));
 
