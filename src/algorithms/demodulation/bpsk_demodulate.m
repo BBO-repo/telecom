@@ -21,8 +21,6 @@ function bits = bpsk_demodulate(symbols, energy)
 %       symbols = bpsk_modulate([0, 1, 0]);
 %       bits = bpsk_demodulate(symbols);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('bpsk_demodulate: Not enough input arguments');

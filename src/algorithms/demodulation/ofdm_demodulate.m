@@ -27,8 +27,6 @@ function freq_symbols = ofdm_demodulate(rx_signal, N, cp_length)
 %       tx = ofdm_modulate(freq_sym, 16);
 %       rx_freq = ofdm_demodulate(tx, N, 16);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('ofdm_demodulate: Not enough input arguments');

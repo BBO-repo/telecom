@@ -26,8 +26,6 @@ function H_full = pilot_interpolation(H_pilots, pilot_indices, total_subcarriers
 %       H_pilots = [1+0.1j, 0.9+0.05j, 1.1-0.05j, 0.95+0.1j];
 %       H_full = pilot_interpolation(H_pilots, pilot_idx, 16, 'linear');
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 3
         error('pilot_interpolation: Not enough input arguments');

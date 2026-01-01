@@ -22,8 +22,6 @@ function y = freq_offset_correct(x, freq_offset, fs)
 %       x = exp(1j*2*pi*1000*t);  % Signal with 1 kHz offset
 %       y = freq_offset_correct(x, 1000, 1e6);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('freq_offset_correct: Not enough input arguments');

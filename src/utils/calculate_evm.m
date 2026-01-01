@@ -20,8 +20,6 @@ function evm_db = calculate_evm(received_symbols, ideal_symbols)
 %       received = ideal + 0.1*randn(size(ideal));
 %       evm_db = calculate_evm(received, ideal);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('calculate_evm: Not enough input arguments');

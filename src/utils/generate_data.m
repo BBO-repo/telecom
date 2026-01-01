@@ -13,8 +13,6 @@ function data = generate_data(num_bits)
 %   Example:
 %       data = generate_data(1000);  % Generate 1000 random bits
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('generate_data: Not enough input arguments');

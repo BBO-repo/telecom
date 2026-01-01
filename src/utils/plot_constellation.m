@@ -20,8 +20,6 @@ function plot_constellation(symbols, title_str, figure_handle)
 %       symbols = qpsk_modulate([0, 1, 1, 0]);
 %       plot_constellation(symbols, 'QPSK Constellation');
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('plot_constellation: Not enough input arguments');

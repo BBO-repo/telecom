@@ -25,8 +25,6 @@ function freq_offset = freq_offset_estimate(rx_signal, preamble_length, fs)
 %       rx = tx .* exp(1j*2*pi*0.01*(0:length(tx)-1)');  % Add freq offset
 %       offset = freq_offset_estimate(rx, length(preamble));
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('freq_offset_estimate: Not enough input arguments');

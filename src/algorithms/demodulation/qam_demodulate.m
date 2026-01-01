@@ -22,8 +22,6 @@ function bits = qam_demodulate(symbols, M, energy)
 %       symbols = qam_modulate(bits, 16);
 %       rx_bits = qam_demodulate(symbols, 16);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('qam_demodulate: Not enough input arguments');

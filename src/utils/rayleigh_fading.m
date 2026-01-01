@@ -22,8 +22,6 @@ function h = rayleigh_fading(num_samples, num_taps)
 %       h = rayleigh_fading(1000);           % Single-tap fading
 %       h = rayleigh_fading(1000, 4);        % 4-tap fading channel
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('rayleigh_fading: Not enough input arguments');

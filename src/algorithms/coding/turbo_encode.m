@@ -25,8 +25,6 @@ function encoded = turbo_encode(data, trellis, interleaver)
 %   Note: This is a simplified implementation. Full turbo codes require
 %   proper trellis encoding and interleaving.
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('turbo_encode: Not enough input arguments');

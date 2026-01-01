@@ -26,8 +26,6 @@ function H_est = mmse_channel_est(rx_pilots, tx_pilots, snr_db, R_hh)
 %       rx_pilots = H_true .* tx_pilots + 0.01*randn(64, 1);
 %       H_est = mmse_channel_est(rx_pilots, tx_pilots, 20);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 3
         error('mmse_channel_est: Not enough input arguments');

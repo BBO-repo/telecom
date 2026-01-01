@@ -21,8 +21,6 @@ function H_est = ls_channel_est(rx_pilots, tx_pilots)
 %       rx_pilots = H_true .* tx_pilots + 0.01*randn(64, 1);
 %       H_est = ls_channel_est(rx_pilots, tx_pilots);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('ls_channel_est: Not enough input arguments');

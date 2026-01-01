@@ -21,8 +21,6 @@ function equalized = mmse_equalizer(rx_symbols, channel_est, snr_db)
 %       rx_freq = ofdm_demodulate(rx_signal, 64);
 %       eq_freq = mmse_equalizer(rx_freq, H_est, 20);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 3
         error('mmse_equalizer: Not enough input arguments');

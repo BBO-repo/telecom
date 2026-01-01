@@ -25,9 +25,5 @@ RUN apt-get update && apt-get install -y \
     octave-communications \
     && rm -rf /var/lib/apt/lists/*
 
-# Add cursor appimage
-RUN curl https://cursor.com/install -fsS | bash
-RUN echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
-
 # Set the default command to run octave when the container starts
 CMD ["octave"]

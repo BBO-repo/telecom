@@ -8,11 +8,6 @@
 %   - Convergence plots
 %   - EVM measurement
 %
-% Complexity Level: Intermediate
-% Key Skills: Higher-order modulation, adaptive equalization, multipath channels
-%
-% Author: L1 Algorithm Developer
-% Date: 2024
 
 clear all;
 close all;

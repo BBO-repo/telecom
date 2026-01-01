@@ -26,8 +26,6 @@ function [frame_start, correlation] = timing_sync(rx_signal, preamble, threshold
 %       rx = [zeros(100,1); preamble; data];
 %       [start, corr] = timing_sync(rx, preamble);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('timing_sync: Not enough input arguments');

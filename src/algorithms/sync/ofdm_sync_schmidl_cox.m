@@ -24,8 +24,6 @@ function [timing_metric, freq_offset_frac] = ofdm_sync_schmidl_cox(rx_signal, N)
 %   Reference: Schmidl & Cox, "Robust Frequency and Timing Synchronization
 %              for OFDM", IEEE Trans. Comm., 1997
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('ofdm_sync_schmidl_cox: Not enough input arguments');

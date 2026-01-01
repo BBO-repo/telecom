@@ -22,8 +22,6 @@ function decoded = rs_decode(encoded, n, k)
 %   Note: This is a simplified implementation. Full RS decoding requires
 %   syndrome calculation, error locator polynomials, etc.
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 3
         error('rs_decode: Not enough input arguments');

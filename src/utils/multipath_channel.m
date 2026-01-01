@@ -24,8 +24,6 @@ function y = multipath_channel(x, channel_taps, channel_delays)
 %       taps = [1, 0.5*exp(1j*pi/4), 0.3];
 %       y = multipath_channel(x, taps);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('multipath_channel: Not enough input arguments');

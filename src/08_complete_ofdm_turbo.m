@@ -10,11 +10,6 @@
 %   - Comprehensive performance analysis
 %   - Comparison with theoretical limits
 %
-% Complexity Level: Expert
-% Key Skills: Complete system integration, turbo codes, advanced receiver algorithms
-%
-% Author: L1 Algorithm Developer
-% Date: 2024
 
 clear all;
 close all;

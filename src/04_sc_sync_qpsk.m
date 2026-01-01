@@ -8,11 +8,6 @@
 %   - Frame synchronization
 %   - Performance under sync errors
 %
-% Complexity Level: Intermediate-Advanced
-% Key Skills: Timing recovery, frequency offset estimation/correction, frame detection
-%
-% Author: L1 Algorithm Developer
-% Date: 2024
 
 clear all;
 close all;

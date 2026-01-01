@@ -22,8 +22,6 @@ function bits = qpsk_demodulate(symbols, energy)
 %       symbols = qpsk_modulate(bits);
 %       rx_bits = qpsk_demodulate(symbols);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('qpsk_demodulate: Not enough input arguments');

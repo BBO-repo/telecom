@@ -25,8 +25,6 @@ function symbols = qpsk_modulate(bits, energy)
 %       bits = [0, 1, 1, 0, 1, 1];
 %       symbols = qpsk_modulate(bits);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('qpsk_modulate: Not enough input arguments');

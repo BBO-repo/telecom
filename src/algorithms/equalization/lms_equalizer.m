@@ -29,8 +29,6 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
 %       training = tx(1:100);
 %       [eq_out, w] = lms_equalizer(rx, training, 0.01, 7);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 4
         error('lms_equalizer: Not enough input arguments');

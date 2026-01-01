@@ -28,8 +28,6 @@ function tx_signal = ofdm_modulate(freq_symbols, cp_length)
 %       freq_sym = reshape(symbols, N, []);
 %       tx = ofdm_modulate(freq_sym, 16);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('ofdm_modulate: Not enough input arguments');

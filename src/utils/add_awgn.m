@@ -23,8 +23,6 @@ function y = add_awgn(x, snr_db, signal_power)
 %       x = randn(1000, 1);
 %       y = add_awgn(x, 10);  % Add noise at 10 dB SNR
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('add_awgn: Not enough input arguments');

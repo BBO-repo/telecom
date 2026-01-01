@@ -7,11 +7,6 @@
 %   - Coherent BPSK demodulation
 %   - BER calculation and analysis
 %
-% Complexity Level: Beginner
-% Key Skills: Basic modulation, AWGN channel modeling, BER analysis
-%
-% Author: L1 Algorithm Developer
-% Date: 2024
 
 clear all;
 close all;

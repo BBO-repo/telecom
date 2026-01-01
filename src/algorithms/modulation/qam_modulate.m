@@ -23,8 +23,6 @@ function symbols = qam_modulate(bits, M, energy)
 %       bits = randi([0, 1], 1, 32);
 %       symbols = qam_modulate(bits, 16);  % 16-QAM
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('qam_modulate: Not enough input arguments');

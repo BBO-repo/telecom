@@ -27,8 +27,6 @@ function decoded = turbo_decode(encoded, trellis, interleaver, num_iterations)
 %   Note: This is a simplified implementation. Full turbo decoding requires
 %   BCJR algorithm, extrinsic information exchange, etc.
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 1
         error('turbo_decode: Not enough input arguments');

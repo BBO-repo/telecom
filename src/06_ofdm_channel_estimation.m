@@ -8,11 +8,6 @@
 %   - Comparison of estimation methods
 %   - Channel response visualization
 %
-% Complexity Level: Advanced
-% Key Skills: OFDM channel estimation, frequency-domain equalization, pilot-based methods
-%
-% Author: L1 Algorithm Developer
-% Date: 2024
 
 clear all;
 close all;

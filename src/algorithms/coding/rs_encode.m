@@ -23,8 +23,6 @@ function encoded = rs_encode(data, n, k)
 %   Note: This is a simplified implementation for educational purposes.
 %   Full RS codes require Galois field arithmetic.
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 3
         error('rs_encode: Not enough input arguments');

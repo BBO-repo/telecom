@@ -8,11 +8,6 @@
 %   - AWGN channel
 %   - BER vs SNR performance
 %
-% Complexity Level: Advanced-Basic
-% Key Skills: OFDM fundamentals, IFFT/FFT operations, cyclic prefix
-%
-% Author: L1 Algorithm Developer
-% Date: 2024
 
 clear all;
 close all;

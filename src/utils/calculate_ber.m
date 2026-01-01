@@ -18,8 +18,6 @@ function ber = calculate_ber(tx_bits, rx_bits)
 %       rx_bits = [1, 1, 1, 1, 0];
 %       ber = calculate_ber(tx_bits, rx_bits);  % Returns 0.2 (1 error out of 5)
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('calculate_ber: Not enough input arguments');

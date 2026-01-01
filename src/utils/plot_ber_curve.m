@@ -22,8 +22,6 @@ function plot_ber_curve(snr_db, ber_values, legend_str, figure_handle)
 %       ber = 0.5 * erfc(sqrt(10.^(snr/10)));
 %       plot_ber_curve(snr, ber, 'Theoretical BPSK');
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('plot_ber_curve: Not enough input arguments');

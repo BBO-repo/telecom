@@ -22,8 +22,6 @@ function equalized = zf_equalizer(rx_symbols, channel_est)
 %       rx_freq = ofdm_demodulate(rx_signal, 64);
 %       eq_freq = zf_equalizer(rx_freq, H_est);
 %
-%   Author: L1 Algorithm Developer
-%   Date: 2024
 
     if nargin < 2
         error('zf_equalizer: Not enough input arguments');

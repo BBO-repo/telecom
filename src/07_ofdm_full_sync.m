@@ -8,11 +8,6 @@
 %   - Sample clock offset correction
 %   - Full receiver chain with sync errors
 %
-% Complexity Level: Advanced-Expert
-% Key Skills: OFDM synchronization algorithms, IFO/FFO estimation, robust receiver design
-%
-% Author: L1 Algorithm Developer
-% Date: 2024
 
 clear all;
 close all;

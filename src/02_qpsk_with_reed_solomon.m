@@ -7,11 +7,6 @@
 %   - BER comparison with and without coding
 %   - Performance curves (BER vs SNR)
 %
-% Complexity Level: Intermediate-Basic
-% Key Skills: QPSK, block coding, coding gain analysis
-%
-% Author: L1 Algorithm Developer
-% Date: 2024
 
 clear all;
 close all;
