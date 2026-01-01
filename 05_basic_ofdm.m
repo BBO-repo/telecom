@@ -120,9 +120,13 @@ grid on;
 xlabel('Sample Index', 'FontSize', 12);
 ylabel('Amplitude', 'FontSize', 12);
 title('OFDM Symbol (Time Domain)', 'FontSize', 14, 'FontWeight', 'bold');
-legend('Real', 'Imaginary', 'Location', 'best');
+legend('Real', 'Imaginary', 'Location', 'northeast');
 
-sgtitle('Level 5: Basic OFDM System', 'FontSize', 16, 'FontWeight', 'bold');
+annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
+           'String', 'Basic OFDM System', ...
+           'FontSize', 16, 'FontWeight', 'bold', ...
+           'HorizontalAlignment', 'center', ...
+           'EdgeColor', 'none');
 
 fprintf('\n=== Simulation Complete ===\n');
 fprintf('Final BER at %d dB SNR: %.2e\n', snr_db_range(end), ber_results(end));

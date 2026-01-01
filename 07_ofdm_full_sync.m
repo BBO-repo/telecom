@@ -148,7 +148,7 @@ grid on;
 xlabel('Sample Index', 'FontSize', 11);
 ylabel('Timing Metric', 'FontSize', 11);
 title('Schmidl-Cox Timing Metric', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Metric', 'Estimated', 'True', 'Location', 'best');
+legend('Metric', 'Estimated', 'True', 'Location', 'northeast');
 
 % Frequency offset estimation
 subplot(2, 3, 2);
@@ -158,7 +158,7 @@ grid on;
 ylabel('Frequency Offset', 'FontSize', 11);
 title('Frequency Offset Estimation', 'FontSize', 12, 'FontWeight', 'bold');
 xticklabels({'True', 'Estimated'});
-legend('Fractional FO', 'Location', 'best');
+legend('Fractional FO', 'Location', 'northeast');
 
 % Received signal (time domain, first few samples)
 subplot(2, 3, 3);
@@ -171,7 +171,7 @@ grid on;
 xlabel('Sample Index', 'FontSize', 11);
 ylabel('Amplitude', 'FontSize', 11);
 title('Received Signal (Time Domain)', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Received', 'Transmitted', 'Location', 'best');
+legend('Received', 'Transmitted', 'Location', 'northeast');
 
 % Constellation: Before synchronization
 subplot(2, 3, 4);
@@ -212,8 +212,11 @@ ylabel('Timing Error (samples)', 'FontSize', 11);
 title('Timing Synchronization Error', 'FontSize', 12, 'FontWeight', 'bold');
 xticklabels({''});
 
-sgtitle('Level 7: OFDM with Advanced Synchronization', ...
-    'FontSize', 16, 'FontWeight', 'bold');
+annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
+           'String', 'OFDM with Advanced Synchronization', ...
+           'FontSize', 16, 'FontWeight', 'bold', ...
+           'HorizontalAlignment', 'center', ...
+           'EdgeColor', 'none');
 
 fprintf('\n=== Simulation Complete ===\n');
 

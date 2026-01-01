@@ -142,9 +142,11 @@ rx_freq_data = rx_freq_symbols(:, 2:end);
 %% Channel Estimation and Equalization
 fprintf('Channel estimation and equalization...\n');
 
-% Extract pilots
+% Extract pilots - ensure same number of columns
 rx_pilots = rx_freq_data(pilot_indices, :);
-tx_pilots = freq_symbols(pilot_indices, 2:end);
+num_rx_symbols = size(rx_freq_data, 2);
+% Match the number of columns from received data
+tx_pilots = freq_symbols(pilot_indices, 2:min(2+num_rx_symbols-1, size(freq_symbols, 2)));
 
 % MMSE channel estimation
 H_pilots_mmse = mmse_channel_est(rx_pilots, tx_pilots, snr_db);
@@ -158,8 +160,12 @@ rx_data_symbols = rx_freq_data(data_indices, :);
 rx_data_vector = rx_data_symbols(:);
 H_data = H_est(data_indices);
 
+% Repeat channel estimate for each OFDM symbol
+num_rx_data_symbols = size(rx_data_symbols, 2);
+H_data_repeated = repmat(H_data, num_rx_data_symbols, 1);
+
 % MMSE equalization
-eq_data = mmse_equalizer(rx_data_vector, H_data, snr_db);
+eq_data = mmse_equalizer(rx_data_vector, H_data_repeated, snr_db);
 
 %% Demodulation
 rx_qam_bits = qam_demodulate(eq_data, M);
@@ -223,7 +229,7 @@ grid on;
 xlabel('Subcarrier Index', 'FontSize', 11);
 ylabel('|H(f)|', 'FontSize', 11);
 title('Channel Frequency Response', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Location', 'best');
+legend('Location', 'northeast');
 
 % Constellation: Before equalization
 subplot(2, 3, 2);
@@ -275,8 +281,11 @@ xlabel('Tap Index', 'FontSize', 11);
 ylabel('|h[n]|', 'FontSize', 11);
 title('Channel Impulse Response', 'FontSize', 12, 'FontWeight', 'bold');
 
-sgtitle('Level 8: Complete OFDM System with Turbo Codes', ...
-    'FontSize', 16, 'FontWeight', 'bold');
+annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
+           'String', 'Complete OFDM System with Turbo Codes', ...
+           'FontSize', 16, 'FontWeight', 'bold', ...
+           'HorizontalAlignment', 'center', ...
+           'EdgeColor', 'none');
 
 fprintf('\n=== Simulation Complete ===\n');
 fprintf('System successfully demonstrates:\n');

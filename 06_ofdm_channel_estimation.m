@@ -105,12 +105,16 @@ rx_data_symbols = rx_freq_symbols(data_indices, :);
 rx_data_vector = rx_data_symbols(:);
 
 % Equalize using LS estimate
+% Repeat channel estimate for each OFDM symbol
 H_data_ls = H_est_ls(data_indices);
-eq_data_ls = zf_equalizer(rx_data_vector, H_data_ls);
+H_data_ls_repeated = repmat(H_data_ls, num_ofdm_symbols, 1);
+eq_data_ls = zf_equalizer(rx_data_vector, H_data_ls_repeated);
 
 % Equalize using MMSE estimate
+% Repeat channel estimate for each OFDM symbol
 H_data_mmse = H_est_mmse(data_indices);
-eq_data_mmse = mmse_equalizer(rx_data_vector, H_data_mmse, snr_db);
+H_data_mmse_repeated = repmat(H_data_mmse, num_ofdm_symbols, 1);
+eq_data_mmse = mmse_equalizer(rx_data_vector, H_data_mmse_repeated, snr_db);
 
 %% Demodulation
 rx_bits_ls = qam_demodulate(eq_data_ls, M);
@@ -139,7 +143,7 @@ grid on;
 xlabel('Subcarrier Index', 'FontSize', 11);
 ylabel('|H(f)|', 'FontSize', 11);
 title('Channel Frequency Response (Magnitude)', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Location', 'best');
+legend('Location', 'northeast');
 
 subplot(2, 3, 2);
 plot(1:N, angle(H_true_freq)*180/pi, 'k-', 'LineWidth', 2, 'DisplayName', 'True');
@@ -152,7 +156,7 @@ grid on;
 xlabel('Subcarrier Index', 'FontSize', 11);
 ylabel('Phase (degrees)', 'FontSize', 11);
 title('Channel Frequency Response (Phase)', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Location', 'best');
+legend('Location', 'northeast');
 
 % Constellation: Without equalization
 subplot(2, 3, 3);
@@ -196,8 +200,11 @@ xlabel('Tap Index', 'FontSize', 11);
 ylabel('|h[n]|', 'FontSize', 11);
 title('Channel Impulse Response', 'FontSize', 12, 'FontWeight', 'bold');
 
-sgtitle('Level 6: OFDM with Channel Estimation and Equalization', ...
-    'FontSize', 16, 'FontWeight', 'bold');
+annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
+           'String', 'OFDM with Channel Estimation and Equalization', ...
+           'FontSize', 16, 'FontWeight', 'bold', ...
+           'HorizontalAlignment', 'center', ...
+           'EdgeColor', 'none');
 
 fprintf('\n=== Simulation Complete ===\n');
 
