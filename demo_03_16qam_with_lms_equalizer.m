@@ -1,4 +1,4 @@
-%% Level 3: 16-QAM with Adaptive Equalization (LMS)
+%% Demo 3: 16-QAM with Adaptive Equalization (LMS)
 %
 % This script demonstrates 16-QAM with LMS adaptive equalization:
 %   - 16-QAM modulation/demodulation
@@ -31,7 +31,7 @@ addpath('./algorithms/modulation');
 addpath('./algorithms/demodulation');
 addpath('./algorithms/equalization');
 
-fprintf('=== Level 3: 16-QAM with LMS Equalization ===\n');
+fprintf('=== Demo 3: 16-QAM with LMS Equalization ===\n');
 fprintf('Channel taps: %d\n', length(channel_taps));
 fprintf('Equalizer taps: %d\n', num_taps);
 fprintf('SNR: %d dB\n', snr_db);

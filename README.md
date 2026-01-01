@@ -19,14 +19,14 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 ## Project Structure
 
 ```
-├── demo_01_basic_bpsk.m               # Level 1: Basic BPSK system
-├── demo_02_qpsk_with_reed_solomon.m   # Level 2: QPSK with error correction
-├── demo_03_16qam_with_lms_equalizer.m # Level 3: 16-QAM with LMS equalizer
-├── demo_04_sc_sync_qpsk.m             # Level 4: QPSK with synchronization
-├── demo_05_basic_ofdm.m               # Level 5: Basic OFDM system
-├── demo_06_ofdm_channel_estimation.m  # Level 6: OFDM with channel estimation
-├── demo_07_ofdm_full_sync.m           # Level 7: OFDM with advanced sync
-├── demo_08_complete_ofdm_turbo.m      # Level 8: Complete OFDM with turbo codes
+├── demo_01_basic_bpsk.m               # Demo 1: Basic BPSK system
+├── demo_02_qpsk_with_reed_solomon.m   # Demo 2: QPSK with error correction
+├── demo_03_16qam_with_lms_equalizer.m # Demo 3: 16-QAM with LMS equalizer
+├── demo_04_sc_sync_qpsk.m             # Demo 4: QPSK with synchronization
+├── demo_05_basic_ofdm.m               # Demo 5: Basic OFDM system
+├── demo_06_ofdm_channel_estimation.m  # Demo 6: OFDM with channel estimation
+├── demo_07_ofdm_full_sync.m           # Demo 7: OFDM with advanced sync
+├── demo_08_complete_ofdm_turbo.m      # Demo 8: Complete OFDM with turbo codes
 ├── setup_paths.m                 # Path setup helper
 ├── algorithms/                   # Core algorithm implementations
 │   ├── modulation/               # Modulation schemes
@@ -88,18 +88,18 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 ### Available Examples
 
-- **Level 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
-- **Level 2** (`demo_02_qpsk_with_reed_solomon.m`): QPSK with error correction
-- **Level 3** (`demo_03_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
-- **Level 4** (`demo_04_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
-- **Level 5** (`demo_05_basic_ofdm.m`): Basic OFDM system
-- **Level 6** (`demo_06_ofdm_channel_estimation.m`): OFDM with channel estimation
-- **Level 7** (`demo_07_ofdm_full_sync.m`): OFDM with advanced synchronization
-- **Level 8** (`demo_08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
+- **Demo 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
+- **Demo 2** (`demo_02_qpsk_with_reed_solomon.m`): QPSK with error correction
+- **Demo 3** (`demo_03_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
+- **Demo 4** (`demo_04_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
+- **Demo 5** (`demo_05_basic_ofdm.m`): Basic OFDM system
+- **Demo 6** (`demo_06_ofdm_channel_estimation.m`): OFDM with channel estimation
+- **Demo 7** (`demo_07_ofdm_full_sync.m`): OFDM with advanced synchronization
+- **Demo 8** (`demo_08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
 
 ## Demonstration Scripts Details
 
-### Level 1: Basic Single-Carrier BPSK System
+### Demo 1: Basic Single-Carrier BPSK System
 **File**: `demo_01_basic_bpsk.m`  
 
 **Features**:
@@ -112,7 +112,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 ---
 
-### Level 2: QPSK with Basic Error Correction
+### Demo 2: QPSK with Basic Error Correction
 **File**: `demo_02_qpsk_with_reed_solomon.m`
 
 **Features**:
@@ -124,7 +124,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 ---
 
-### Level 3: 16-QAM with Adaptive Equalization
+### Demo 3: 16-QAM with Adaptive Equalization
 **File**: `demo_03_16qam_with_lms_equalizer.m`
 
 **Features**:
@@ -137,7 +137,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 ---
 
-### Level 4: Single-Carrier QPSK with Synchronization
+### Demo 4: Single-Carrier QPSK with Synchronization
 **File**: `demo_04_sc_sync_qpsk.m`  
 
 **Features**:
@@ -150,7 +150,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 ---
 
-### Level 5: Basic OFDM System
+### Demo 5: Basic OFDM System
 **File**: `demo_05_basic_ofdm.m`  
 
 **Features**:
@@ -163,7 +163,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 ---
 
-### Level 6: OFDM with Channel Estimation & Equalization
+### Demo 6: OFDM with Channel Estimation & Equalization
 **File**: `demo_06_ofdm_channel_estimation.m`  
 
 **Features**:
@@ -176,7 +176,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 
 ---
 
-### Level 7: OFDM with Advanced Synchronization
+### Demo 7: OFDM with Advanced Synchronization
 **File**: `demo_07_ofdm_full_sync.m`  
 
 **Features**:
@@ -188,7 +188,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 - Robust synchronization under impairments
 
 
-### Level 8: Complete OFDM System with Turbo Codes
+### Demo 8: Complete OFDM System with Turbo Codes
 **File**: `demo_08_complete_ofdm_turbo.m`  
 
 **Features**:
@@ -285,8 +285,8 @@ Typical BER ranges for reference:
 
 ### Simplified Implementations
 Some algorithms use simplified implementations for educational purposes:
-- **Reed-Solomon codes**: Simplified encoding/decoding (Level 2)
-- **Turbo codes**: Simplified iterative decoding (Level 8)
+- **Reed-Solomon codes**: Simplified encoding/decoding (Demo 2)
+- **Turbo codes**: Simplified iterative decoding (Demo 8)
 - **Channel models**: Simplified multipath representation
 
 ### Theoretical Comparisons

@@ -1,4 +1,4 @@
-%% Level 2: QPSK with Basic Error Correction (Reed-Solomon)
+%% Demo 2: QPSK with Basic Error Correction (Reed-Solomon)
 %
 % This script demonstrates QPSK modulation with Reed-Solomon error correction:
 %   - QPSK modulation/demodulation
@@ -32,7 +32,7 @@ addpath('./algorithms/coding');
 ber_uncoded = zeros(size(snr_db_range));
 ber_coded = zeros(size(snr_db_range));
 
-fprintf('=== Level 2: QPSK with Reed-Solomon Coding ===\n');
+fprintf('=== Demo 2: QPSK with Reed-Solomon Coding ===\n');
 fprintf('Code rate: %.2f (n=%d, k=%d)\n', code_rate, n, k);
 fprintf('Simulating BER vs SNR...\n');
 

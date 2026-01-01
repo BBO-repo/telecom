@@ -1,4 +1,4 @@
-%% Level 8: Complete OFDM System with Turbo Codes
+%% Demo 8: Complete OFDM System with Turbo Codes
 %
 % This script demonstrates a complete OFDM system with:
 %   - Full OFDM system (64-QAM)
@@ -44,7 +44,7 @@ addpath('./algorithms/channel');
 addpath('./algorithms/equalization');
 addpath('./algorithms/sync');
 
-fprintf('=== Level 8: Complete OFDM System with Turbo Codes ===\n');
+fprintf('=== Demo 8: Complete OFDM System with Turbo Codes ===\n');
 fprintf('FFT size: %d\n', N);
 fprintf('Modulation: %d-QAM\n', M);
 fprintf('Turbo code rate: %.2f\n', turbo_rate);

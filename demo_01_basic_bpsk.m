@@ -1,4 +1,4 @@
-%% Level 1: Basic Single-Carrier BPSK System
+%% Demo 1: Basic Single-Carrier BPSK System
 %
 % This script demonstrates a basic BPSK communication system with:
 %   - Binary data generation
@@ -25,7 +25,7 @@ addpath('./algorithms/demodulation');
 %% Initialize BER storage
 ber_results = zeros(size(snr_db_range));
 
-fprintf('=== Level 1: Basic BPSK System ===\n');
+fprintf('=== Demo 1: Basic BPSK System ===\n');
 fprintf('Simulating BER vs SNR...\n');
 
 %% Main Simulation Loop

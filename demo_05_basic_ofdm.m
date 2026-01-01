@@ -1,4 +1,4 @@
-%% Level 5: Basic OFDM System
+%% Demo 5: Basic OFDM System
 %
 % This script demonstrates a basic OFDM system:
 %   - OFDM modulation (IFFT)
@@ -26,7 +26,7 @@ addpath('./utils');
 addpath('./algorithms/modulation');
 addpath('./algorithms/demodulation');
 
-fprintf('=== Level 5: Basic OFDM System ===\n');
+fprintf('=== Demo 5: Basic OFDM System ===\n');
 fprintf('FFT size: %d\n', N);
 fprintf('CP length: %d\n', cp_length);
 fprintf('Modulation: %d-QAM\n', M);

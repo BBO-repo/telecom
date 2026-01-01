@@ -1,4 +1,4 @@
-%% Level 4: Single-Carrier QPSK with Timing/Frequency Synchronization
+%% Demo 4: Single-Carrier QPSK with Timing/Frequency Synchronization
 %
 % This script demonstrates QPSK with synchronization:
 %   - QPSK modulation with preamble
@@ -26,7 +26,7 @@ addpath('./algorithms/modulation');
 addpath('./algorithms/demodulation');
 addpath('./algorithms/sync');
 
-fprintf('=== Level 4: QPSK with Synchronization ===\n');
+fprintf('=== Demo 4: QPSK with Synchronization ===\n');
 fprintf('Frequency offset: %.4f (normalized)\n', freq_offset_hz);
 fprintf('SNR: %d dB\n', snr_db);
 

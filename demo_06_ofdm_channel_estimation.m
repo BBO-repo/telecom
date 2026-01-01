@@ -1,4 +1,4 @@
-%% Level 6: OFDM with Channel Estimation & Equalization
+%% Demo 6: OFDM with Channel Estimation & Equalization
 %
 % This script demonstrates OFDM with channel estimation:
 %   - OFDM with pilot symbols
@@ -33,7 +33,7 @@ addpath('./algorithms/demodulation');
 addpath('./algorithms/channel');
 addpath('./algorithms/equalization');
 
-fprintf('=== Level 6: OFDM with Channel Estimation ===\n');
+fprintf('=== Demo 6: OFDM with Channel Estimation ===\n');
 fprintf('FFT size: %d\n', N);
 fprintf('Pilot spacing: %d\n', pilot_spacing);
 fprintf('SNR: %d dB\n', snr_db);

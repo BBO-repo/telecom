@@ -1,4 +1,4 @@
-%% Level 7: OFDM with Advanced Synchronization
+%% Demo 7: OFDM with Advanced Synchronization
 %
 % This script demonstrates OFDM with full synchronization chain:
 %   - OFDM with Schmidl-Cox synchronization
@@ -31,7 +31,7 @@ addpath('./algorithms/modulation');
 addpath('./algorithms/demodulation');
 addpath('./algorithms/sync');
 
-fprintf('=== Level 7: OFDM with Full Synchronization ===\n');
+fprintf('=== Demo 7: OFDM with Full Synchronization ===\n');
 fprintf('FFT size: %d\n', N);
 fprintf('Fractional FO: %.2f\n', freq_offset_frac);
 fprintf('Integer FO: %d subcarriers\n', freq_offset_int);
