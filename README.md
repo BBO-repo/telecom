@@ -20,7 +20,7 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 
 ```
 ├── demo_01_basic_bpsk.m                    # Demo 1: Basic BPSK system
-├── demo_02_qpsk_with_reed_solomon.m        # Demo 2: QPSK modulation system
+├── demo_02_basic_qpsk.m                    # Demo 2: QPSK modulation system
 ├── demo_04_16qam_with_lms_equalizer.m      # Demo 3: 16-QAM with LMS equalizer
 ├── demo_05_sc_sync_qpsk.m                  # Demo 4: QPSK with synchronization
 ├── demo_06_basic_ofdm.m                    # Demo 5: Basic OFDM system
@@ -87,7 +87,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 ### Available Examples
 
 - **Demo 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
-- **Demo 2** (`demo_02_qpsk_with_reed_solomon.m`): QPSK modulation system
+- **Demo 2** (`demo_02_basic_qpsk.m`): QPSK modulation system
 - **Demo 3** (`demo_04_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
 - **Demo 4** (`demo_05_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
 - **Demo 5** (`demo_06_basic_ofdm.m`): Basic OFDM system
@@ -111,7 +111,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 ---
 
 ### Demo 2: QPSK Modulation System
-**File**: `demo_02_qpsk_with_reed_solomon.m`
+**File**: `demo_02_basic_qpsk.m`
 
 **Features**:
 - QPSK modulation/demodulation
