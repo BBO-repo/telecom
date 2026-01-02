@@ -1,4 +1,4 @@
-function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size, num_taps, mode)
+function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size, num_taps, mode, M)
 % LMS_EQUALIZER LMS (Least Mean Squares) adaptive equalizer
 %
 %   [EQUALIZED, WEIGHTS] = LMS_EQUALIZER(RX_SIGNAL, TRAINING_SEQ, STEP_SIZE, NUM_TAPS)
@@ -8,6 +8,10 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
 %       'training' - Use training sequence only (default)
 %       'decision' - Use decision-directed mode after training
 %
+%   [EQUALIZED, WEIGHTS] = LMS_EQUALIZER(..., MODE, M) specifies the modulation
+%   order M for decision-directed mode. M must be a power of 2 (4, 16, 64, etc.).
+%   Default is 4 (QPSK) for backward compatibility.
+%
 %   Inputs:
 %       rx_signal    - Received signal (column vector)
 %       training_seq - Training sequence (known symbols for adaptation)
@@ -15,6 +19,8 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
 %       num_taps     - Number of equalizer taps (integer)
 %       mode         - Optional: 'training' or 'decision' (string,
 %                      default: 'training')
+%       M            - Optional: Modulation order for decision-directed mode
+%                      (default: 4 for QPSK)
 %
 %   Outputs:
 %       equalized    - Equalized output signal (column vector)
@@ -36,6 +42,10 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
     
     if nargin < 5
         mode = 'training';
+    end
+    
+    if nargin < 6
+        M = 4;  % Default to QPSK for backward compatibility
     end
     
     % Ensure column vectors
@@ -75,6 +85,20 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
     
     % Decision-directed mode
     if strcmpi(mode, 'decision') && length(rx_signal) > training_length
+        % Generate constellation points for M-QAM
+        % Use same normalization as qam_modulate (energy = 1)
+        sqrt_M = sqrt(M);
+        levels = -sqrt_M + 1 : 2 : sqrt_M - 1;
+        constellation = [];
+        for i = 1:length(levels)
+            for q = 1:length(levels)
+                constellation = [constellation; levels(i) + 1j*levels(q)];
+            end
+        end
+        % Normalize to match qam_modulate normalization (energy = 1)
+        current_energy = 2*(M-1)/3;
+        constellation = constellation * sqrt(1 / current_energy);
+        
         % Simple hard decision for continuation
         for n = training_length + 1 : length(rx_signal)
             % Input vector
@@ -84,12 +108,10 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
             y = weights' * input_vec;
             equalized(n) = y;
             
-            % Hard decision (QPSK for example - can be generalized)
-            % Find closest QPSK point
-            qpsk_points = [1+1j, -1+1j, 1-1j, -1-1j] / sqrt(2);
-            distances = abs(y/sqrt(2) - qpsk_points);
+            % Hard decision: Find closest constellation point
+            distances = abs(y - constellation);
             [~, min_idx] = min(distances);
-            d_hat = qpsk_points(min_idx) * sqrt(2);
+            d_hat = constellation(min_idx);
             
             % Error (decision-directed)
             e = d_hat - y;
