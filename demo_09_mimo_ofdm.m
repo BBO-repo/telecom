@@ -1,4 +1,4 @@
-%% Demo 10: MIMO-OFDM System
+%% Demo 9: MIMO-OFDM System
 %
 % This script demonstrates a MIMO-OFDM system with spatial multiplexing:
 %   - Multiple transmit and receive antennas (MIMO)
@@ -42,7 +42,7 @@ addpath('./algorithms/demodulation');
 addpath('./algorithms/channel');
 addpath('./algorithms/equalization');
 
-fprintf('=== Demo 10: MIMO-OFDM System ===\n');
+fprintf('=== Demo 9: MIMO-OFDM System ===\n');
 fprintf('FFT size: %d\n', N);
 fprintf('CP length: %d\n', cp_length);
 fprintf('Modulation: %d-QAM\n', M);
