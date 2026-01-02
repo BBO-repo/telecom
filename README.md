@@ -21,12 +21,12 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 ```
 ├── demo_01_basic_bpsk.m                    # Demo 1: Basic BPSK system
 ├── demo_02_basic_qpsk.m                    # Demo 2: QPSK modulation system
-├── demo_04_16qam_with_lms_equalizer.m      # Demo 3: 16-QAM with LMS equalizer
-├── demo_05_sc_sync_qpsk.m                  # Demo 4: QPSK with synchronization
-├── demo_06_basic_ofdm.m                    # Demo 5: Basic OFDM system
-├── demo_07_ofdm_channel_estimation.m       # Demo 6: OFDM with channel estimation
-├── demo_08_ofdm_full_sync.m                # Demo 7: OFDM with advanced sync
-├── demo_09_complete_ofdm_turbo.m           # Demo 8: Complete OFDM with turbo codes
+├── demo_03_16qam_with_lms_equalizer.m      # Demo 3: 16-QAM with LMS equalizer
+├── demo_04_sc_sync_qpsk.m                  # Demo 4: QPSK with synchronization
+├── demo_05_basic_ofdm.m                    # Demo 5: Basic OFDM system
+├── demo_06_ofdm_channel_estimation.m       # Demo 6: OFDM with channel estimation
+├── demo_07_ofdm_full_sync.m                # Demo 7: OFDM with advanced sync
+├── demo_08_complete_ofdm_turbo.m           # Demo 8: Complete OFDM with turbo codes
 ├── setup_paths.m                 # Path setup helper
 ├── algorithms/                   # Core algorithm implementations
 │   ├── modulation/               # Modulation schemes
@@ -88,12 +88,12 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 
 - **Demo 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
 - **Demo 2** (`demo_02_basic_qpsk.m`): QPSK modulation system
-- **Demo 3** (`demo_04_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
-- **Demo 4** (`demo_05_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
-- **Demo 5** (`demo_06_basic_ofdm.m`): Basic OFDM system
-- **Demo 6** (`demo_07_ofdm_channel_estimation.m`): OFDM with channel estimation
-- **Demo 7** (`demo_08_ofdm_full_sync.m`): OFDM with advanced synchronization
-- **Demo 8** (`demo_09_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
+- **Demo 3** (`demo_03_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
+- **Demo 4** (`demo_04_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
+- **Demo 5** (`demo_05_basic_ofdm.m`): Basic OFDM system
+- **Demo 6** (`demo_06_ofdm_channel_estimation.m`): OFDM with channel estimation
+- **Demo 7** (`demo_07_ofdm_full_sync.m`): OFDM with advanced synchronization
+- **Demo 8** (`demo_08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
 
 ## Demonstration Scripts Details
 
@@ -123,7 +123,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 ---
 
 ### Demo 3: 16-QAM with Adaptive Equalization
-**File**: `demo_04_16qam_with_lms_equalizer.m`
+**File**: `demo_03_16qam_with_lms_equalizer.m`
 
 **Features**:
 - 16-QAM modulation/demodulation
@@ -136,7 +136,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 ---
 
 ### Demo 4: Single-Carrier QPSK with Synchronization
-**File**: `demo_05_sc_sync_qpsk.m`  
+**File**: `demo_04_sc_sync_qpsk.m`  
 
 **Features**:
 - QPSK with preamble
@@ -149,7 +149,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 ---
 
 ### Demo 5: Basic OFDM System
-**File**: `demo_06_basic_ofdm.m`  
+**File**: `demo_05_basic_ofdm.m`  
 
 **Features**:
 - OFDM modulation (IFFT)
@@ -162,7 +162,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 ---
 
 ### Demo 6: OFDM with Channel Estimation & Equalization
-**File**: `demo_07_ofdm_channel_estimation.m`  
+**File**: `demo_06_ofdm_channel_estimation.m`  
 
 **Features**:
 - OFDM with pilot symbols
@@ -175,7 +175,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 ---
 
 ### Demo 7: OFDM with Advanced Synchronization
-**File**: `demo_08_ofdm_full_sync.m`  
+**File**: `demo_07_ofdm_full_sync.m`  
 
 **Features**:
 - Schmidl-Cox synchronization algorithm
@@ -187,7 +187,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 
 
 ### Demo 8: Complete OFDM System with Turbo Codes
-**File**: `demo_09_complete_ofdm_turbo.m`  
+**File**: `demo_08_complete_ofdm_turbo.m`  
 
 **Features**:
 - Full OFDM system with 64-QAM
