@@ -4,11 +4,11 @@ A project for developing and optimizing Layer 1 (Physical Layer) algorithms for 
 
 ## Overview
 
-This project focuses on implementing signal processing algorithms for physical layer communication systems, including modulation, demodulation, channel estimation, equalization, and synchronization. The project contains 9 progressive demonstration scripts showcasing increasing complexity, from basic single-carrier systems to advanced multi-carrier OFDM systems with comprehensive receiver algorithms.
+This project focuses on implementing signal processing algorithms for physical layer communication systems, including modulation, demodulation, channel estimation, equalization, and synchronization. The project contains 7 progressive demonstration scripts showcasing increasing complexity, from basic single-carrier systems to advanced multi-carrier OFDM systems with comprehensive receiver algorithms.
 
 The scripts demonstrate practical implementation of:
 - **Modulation/Demodulation**: BPSK, QPSK, QAM, OFDM
-- **Error Correction**: Reed-Solomon codes, Turbo codes
+- **Error Correction**: Turbo codes
 - **Equalization**: LMS adaptive, ZF, MMSE
 - **Synchronization**: Timing recovery, frequency offset estimation/correction
 - **Channel Estimation**: LS, MMSE methods with interpolation
@@ -20,14 +20,13 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 
 ```
 ├── demo_01_basic_bpsk.m                    # Demo 1: Basic BPSK system
-├── demo_02_qpsk_with_reed_solomon.m        # Demo 2: QPSK with error correction
-├── demo_03_reed_solomon_illustration.m     # Demo 3: Reed-Solomon coding illustration
-├── demo_04_16qam_with_lms_equalizer.m      # Demo 4: 16-QAM with LMS equalizer
-├── demo_05_sc_sync_qpsk.m                  # Demo 5: QPSK with synchronization
-├── demo_06_basic_ofdm.m                    # Demo 6: Basic OFDM system
-├── demo_07_ofdm_channel_estimation.m       # Demo 7: OFDM with channel estimation
-├── demo_08_ofdm_full_sync.m                # Demo 8: OFDM with advanced sync
-├── demo_09_complete_ofdm_turbo.m           # Demo 9: Complete OFDM with turbo codes
+├── demo_02_qpsk_with_reed_solomon.m        # Demo 2: QPSK modulation system
+├── demo_04_16qam_with_lms_equalizer.m      # Demo 3: 16-QAM with LMS equalizer
+├── demo_05_sc_sync_qpsk.m                  # Demo 4: QPSK with synchronization
+├── demo_06_basic_ofdm.m                    # Demo 5: Basic OFDM system
+├── demo_07_ofdm_channel_estimation.m       # Demo 6: OFDM with channel estimation
+├── demo_08_ofdm_full_sync.m                # Demo 7: OFDM with advanced sync
+├── demo_09_complete_ofdm_turbo.m           # Demo 8: Complete OFDM with turbo codes
 ├── setup_paths.m                 # Path setup helper
 ├── algorithms/                   # Core algorithm implementations
 │   ├── modulation/               # Modulation schemes
@@ -49,8 +48,6 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 │   │   ├── zf_equalizer.m        # Zero-forcing equalizer
 │   │   └── mmse_equalizer.m      # MMSE equalizer
 │   ├── coding/                   # Error correction codes
-│   │   ├── rs_encode.m           # Reed-Solomon encoding
-│   │   ├── rs_decode.m           # Reed-Solomon decoding
 │   │   ├── turbo_encode.m        # Turbo code encoding
 │   │   └── turbo_decode.m        # Turbo code decoding
 │   └── sync/                     # Synchronization algorithms
@@ -75,7 +72,7 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 
 ### Running Scripts
 
-The root directory contains 9 progressive demonstration scripts showcasing increasing complexity:
+The root directory contains 7 progressive demonstration scripts showcasing increasing complexity:
 
 1. Run any demonstration script directly:
    ```bash
@@ -90,14 +87,13 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 ### Available Examples
 
 - **Demo 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
-- **Demo 2** (`demo_02_qpsk_with_reed_solomon.m`): QPSK with error correction
-- **Demo 3** (`demo_03_reed_solomon_illustration.m`): Reed-Solomon coding illustration
-- **Demo 4** (`demo_04_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
-- **Demo 5** (`demo_05_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
-- **Demo 6** (`demo_06_basic_ofdm.m`): Basic OFDM system
-- **Demo 7** (`demo_07_ofdm_channel_estimation.m`): OFDM with channel estimation
-- **Demo 8** (`demo_08_ofdm_full_sync.m`): OFDM with advanced synchronization
-- **Demo 9** (`demo_09_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
+- **Demo 2** (`demo_02_qpsk_with_reed_solomon.m`): QPSK modulation system
+- **Demo 3** (`demo_04_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
+- **Demo 4** (`demo_05_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
+- **Demo 5** (`demo_06_basic_ofdm.m`): Basic OFDM system
+- **Demo 6** (`demo_07_ofdm_channel_estimation.m`): OFDM with channel estimation
+- **Demo 7** (`demo_08_ofdm_full_sync.m`): OFDM with advanced synchronization
+- **Demo 8** (`demo_09_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
 
 ## Demonstration Scripts Details
 
@@ -114,32 +110,19 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 
 ---
 
-### Demo 2: QPSK with Basic Error Correction
+### Demo 2: QPSK Modulation System
 **File**: `demo_02_qpsk_with_reed_solomon.m`
 
 **Features**:
 - QPSK modulation/demodulation
-- Error correction coding (simplified RS-like)
 - AWGN channel
-- BER comparison: coded vs uncoded
-- Coding gain analysis
+- BER performance analysis
+- Theoretical BER comparison
+- Constellation visualization
 
 ---
 
-### Demo 3: Reed-Solomon Coding Illustration
-**File**: `demo_03_reed_solomon_illustration.m`
-
-**Features**:
-- Step-by-step Reed-Solomon encoding process
-- Symbol error introduction and correction
-- Comparison of different code parameters (n, k)
-- Visualization of encoding/decoding process
-- Error correction capability analysis
-- Performance under various error rates
-
----
-
-### Demo 4: 16-QAM with Adaptive Equalization
+### Demo 3: 16-QAM with Adaptive Equalization
 **File**: `demo_04_16qam_with_lms_equalizer.m`
 
 **Features**:
@@ -152,7 +135,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 
 ---
 
-### Demo 5: Single-Carrier QPSK with Synchronization
+### Demo 4: Single-Carrier QPSK with Synchronization
 **File**: `demo_05_sc_sync_qpsk.m`  
 
 **Features**:
@@ -165,7 +148,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 
 ---
 
-### Demo 6: Basic OFDM System
+### Demo 5: Basic OFDM System
 **File**: `demo_06_basic_ofdm.m`  
 
 **Features**:
@@ -178,7 +161,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 
 ---
 
-### Demo 7: OFDM with Channel Estimation & Equalization
+### Demo 6: OFDM with Channel Estimation & Equalization
 **File**: `demo_07_ofdm_channel_estimation.m`  
 
 **Features**:
@@ -191,7 +174,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 
 ---
 
-### Demo 8: OFDM with Advanced Synchronization
+### Demo 7: OFDM with Advanced Synchronization
 **File**: `demo_08_ofdm_full_sync.m`  
 
 **Features**:
@@ -203,7 +186,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 - Robust synchronization under impairments
 
 
-### Demo 9: Complete OFDM System with Turbo Codes
+### Demo 8: Complete OFDM System with Turbo Codes
 **File**: `demo_09_complete_ofdm_turbo.m`  
 
 **Features**:
@@ -300,8 +283,7 @@ Typical BER ranges for reference:
 
 ### Simplified Implementations
 Some algorithms use simplified implementations for educational purposes:
-- **Reed-Solomon codes**: Simplified encoding/decoding (Demo 2)
-- **Turbo codes**: Simplified iterative decoding (Demo 9)
+- **Turbo codes**: Simplified iterative decoding (Demo 8)
 - **Channel models**: Simplified multipath representation
 
 ### Theoretical Comparisons
