@@ -88,7 +88,7 @@ Each script is self-contained, documented, and includes comprehensive visualizat
 
 ### Running Scripts
 
-The root directory contains 9 progressive demonstration scripts showcasing increasing complexity:
+The root directory contains 9 progressive demonstration scripts showcasing increasing complexity, to run them pick the one you want and reproduce those steps:
 
 1. Open the Octave GUI and run the desired script:
    - Navigate to the project directory in Octave
@@ -220,8 +220,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 - Channel estimation using pilot symbols
 - MIMO detection algorithms (Zero-Forcing and MMSE)
 - Spatial multiplexing gain demonstration
-- BER performance comparison (SISO vs MIMO)
-- Channel matrix visualization
+- BER comparison at fixed SNR (SISO vs MIMO)
 
 ## Docker Development Environment
 

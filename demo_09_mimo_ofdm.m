@@ -7,7 +7,7 @@
 %   - Channel estimation using pilot symbols
 %   - MIMO detection (Zero-Forcing and MMSE)
 %   - Spatial multiplexing gain
-%   - BER performance comparison (SISO vs MIMO)
+%   - BER comparison at fixed SNR (SISO vs MIMO)
 %
 % MIMO Configuration:
 %   - Nt transmit antennas
@@ -17,7 +17,6 @@
 %
 
 clear all;
-close all;
 clc;
 
 %% Configuration Parameters
@@ -28,12 +27,12 @@ num_ofdm_symbols = 50;         % Number of OFDM symbols
 pilot_spacing = 4;             % Pilot spacing (every Nth subcarrier)
 
 % MIMO Configuration
-Nt = 2;                        % Number of transmit antennas
-Nr = 2;                        % Number of receive antennas
+Nt = 4;                        % Number of transmit antennas
+Nr = 4;                        % Number of receive antennas
 
 % Simulation parameters
-snr_db_range = 0:2:20;         % SNR range for BER curve
-num_trials = 10;               % Trials per SNR point
+snr_db = -10;                  % SNR in dB
+num_trials = 5;                % Trials for averaging over channel realizations
 
 % Add paths
 addpath('./utils');
@@ -43,12 +42,13 @@ addpath('./algorithms/channel');
 addpath('./algorithms/equalization');
 
 fprintf('=== Demo 9: MIMO-OFDM System ===\n');
-fprintf('FFT size: %d\n  (number of subcarriers)', N);
+fprintf('FFT size: %d (number of subcarriers)\n', N);
 fprintf('CP length: %d\n', cp_length);
 fprintf('Modulation: %d-QAM\n', M);
 fprintf('MIMO: %dx%d (Tx x Rx)\n', Nt, Nr);
 fprintf('Number of OFDM symbols: %d\n', num_ofdm_symbols);
 fprintf('Pilot spacing: %d\n', pilot_spacing);
+fprintf('SNR: %d dB\n', snr_db);
 
 %% Generate pilot positions
 pilot_indices = 1:pilot_spacing:N;  % Equally spaced pilots
@@ -56,23 +56,16 @@ num_pilots = length(pilot_indices);
 data_indices = setdiff(1:N, pilot_indices);
 num_data = length(data_indices);
 
-%% Initialize BER storage
-ber_mimo_zf = zeros(size(snr_db_range));
-ber_mimo_mmse = zeros(size(snr_db_range));
-ber_siso = zeros(size(snr_db_range));  % Single antenna for comparison
-
-fprintf('\nSimulating BER vs SNR...\n');
+fprintf('\nRunning simulation...\n');
 
 %% Main Simulation Loop
-for snr_idx = 1:length(snr_db_range)
-    snr_db = snr_db_range(snr_idx);
-    errors_mimo_zf = 0;
-    errors_mimo_mmse = 0;
-    errors_siso = 0;
-    total_bits_mimo = 0;
-    total_bits_siso = 0;
+errors_mimo_zf = 0;
+errors_mimo_mmse = 0;
+errors_siso = 0;
+total_bits_mimo = 0;
+total_bits_siso = 0;
 
-    for trial = 1:num_trials
+for trial = 1:num_trials
         %% Transmitter - MIMO
         % Generate random data bits for each transmit antenna
         bits_per_data_symbol = log2(M) * num_data;
@@ -300,131 +293,17 @@ for snr_idx = 1:length(snr_db_range)
         total_bits_siso = total_bits_siso + min_len;
     end
 
-    % Calculate BER
-    ber_mimo_zf(snr_idx) = errors_mimo_zf / total_bits_mimo;
-    ber_mimo_mmse(snr_idx) = errors_mimo_mmse / total_bits_mimo;
-    ber_siso(snr_idx) = errors_siso / total_bits_siso;
+% Calculate BER
+ber_mimo_zf = errors_mimo_zf / total_bits_mimo;
+ber_mimo_mmse = errors_mimo_mmse / total_bits_mimo;
+ber_siso = errors_siso / total_bits_siso;
 
-    fprintf('SNR = %d dB: MIMO-ZF BER = %.2e, MIMO-MMSE BER = %.2e, SISO BER = %.2e\n', ...
-            snr_db, ber_mimo_zf(snr_idx), ber_mimo_mmse(snr_idx), ber_siso(snr_idx));
-end
-
-%% Generate sample data for visualization
-% Generate a sample constellation at moderate SNR
-snr_viz = 15;  % dB for visualization
-fprintf('\nGenerating sample data for visualization...\n');
-
-% Generate sample QAM symbols for visualization
-num_samples_viz = 200;
-sample_bits_viz = generate_data(num_samples_viz * log2(M));
-sample_qam_viz = qam_modulate(sample_bits_viz, M);
-
-% Sample MIMO channel
-H_viz = sqrt(0.5) * (randn(Nr, Nt) + 1j*randn(Nr, Nt));
-
-% Transmit from each antenna (different data streams)
-x_viz = zeros(Nt, num_samples_viz);
-for tx_ant = 1:Nt
-    start_idx = (tx_ant - 1) * num_samples_viz + 1;
-    end_idx = tx_ant * num_samples_viz;
-    if end_idx <= length(sample_qam_viz)
-        x_viz(tx_ant, :) = sample_qam_viz(start_idx:end_idx).';
-    else
-        % Repeat if needed
-        x_viz(tx_ant, :) = sample_qam_viz(1:num_samples_viz).';
-    end
-end
-
-% Receive signal (per sample)
-y_viz = zeros(Nr, num_samples_viz);
-noise_power_viz = 10^(-snr_viz/10);
-for i = 1:num_samples_viz
-    y_viz(:, i) = H_viz * x_viz(:, i);
-    noise_viz = sqrt(noise_power_viz/2) * (randn(Nr, 1) + 1j*randn(Nr, 1));
-    y_viz(:, i) = y_viz(:, i) + noise_viz;
-end
-
-% ZF detection
-W_zf_viz = pinv(H_viz);
-x_hat_zf_viz = zeros(Nt, num_samples_viz);
-for i = 1:num_samples_viz
-    x_hat_zf_viz(:, i) = W_zf_viz * y_viz(:, i);
-end
-
-% MMSE detection
-snr_linear_viz = 10^(snr_viz/10);
-W_mmse_viz = (H_viz' * H_viz + (1/snr_linear_viz) * eye(Nt)) \ H_viz';
-x_hat_mmse_viz = zeros(Nt, num_samples_viz);
-for i = 1:num_samples_viz
-    x_hat_mmse_viz(:, i) = W_mmse_viz * y_viz(:, i);
-end
-
-%% Visualization
-figure('Position', [100, 100, 1400, 800]);
-
-% BER performance comparison
-subplot(2, 2, 1);
-semilogy(snr_db_range, ber_mimo_zf, 'o-', 'LineWidth', 2, 'MarkerSize', 8, ...
-         'DisplayName', sprintf('MIMO %dx%d ZF', Nt, Nr), 'Color', [0.2 0.6 0.8]);
-hold on;
-semilogy(snr_db_range, ber_mimo_mmse, 's-', 'LineWidth', 2, 'MarkerSize', 8, ...
-         'DisplayName', sprintf('MIMO %dx%d MMSE', Nt, Nr), 'Color', [0.8 0.4 0.2]);
-semilogy(snr_db_range, ber_siso, '^-', 'LineWidth', 2, 'MarkerSize', 8, ...
-         'DisplayName', 'SISO', 'Color', [0.4 0.8 0.4]);
-grid on;
-xlabel('SNR (dB)', 'FontSize', 12);
-ylabel('Bit Error Rate (BER)', 'FontSize', 12);
-title('MIMO-OFDM BER Performance', 'FontSize', 14, 'FontWeight', 'bold');
-legend('Location', 'southwest');
-ylim([1e-5, 1]);
-
-% Channel magnitude response (example for one subcarrier)
-subplot(2, 2, 2);
-imagesc(abs(H_viz));
-colorbar;
-xlabel('Transmit Antenna', 'FontSize', 12);
-ylabel('Receive Antenna', 'FontSize', 12);
-title(sprintf('MIMO Channel Matrix |H| (Sample)'), 'FontSize', 12, 'FontWeight', 'bold');
-colormap('hot');
-
-% Constellation diagram - MIMO ZF
-subplot(2, 2, 3);
-scatter(real(x_hat_zf_viz(:)), imag(x_hat_zf_viz(:)), 50, 'filled', ...
-       'MarkerFaceAlpha', 0.6);
-hold on;
-% Plot ideal constellation points
-ideal_const = qam_modulate(0:15, M);
-scatter(real(ideal_const), imag(ideal_const), 100, 'rx', 'LineWidth', 2);
-grid on;
-xlabel('In-Phase (I)', 'FontSize', 12);
-ylabel('Quadrature (Q)', 'FontSize', 12);
-title('MIMO-OFDM Constellation (ZF Detection)', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Detected', 'Ideal', 'Location', 'northeast');
-axis equal;
-
-% Constellation diagram - MIMO MMSE
-subplot(2, 2, 4);
-scatter(real(x_hat_mmse_viz(:)), imag(x_hat_mmse_viz(:)), 50, 'filled', ...
-       'MarkerFaceAlpha', 0.6);
-hold on;
-scatter(real(ideal_const), imag(ideal_const), 100, 'rx', 'LineWidth', 2);
-grid on;
-xlabel('In-Phase (I)', 'FontSize', 12);
-ylabel('Quadrature (Q)', 'FontSize', 12);
-title('MIMO-OFDM Constellation (MMSE Detection)', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Detected', 'Ideal', 'Location', 'northeast');
-axis equal;
-
-annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
-           'String', sprintf('MIMO-OFDM System (%dx%d)', Nt, Nr), ...
-           'FontSize', 16, 'FontWeight', 'bold', ...
-           'HorizontalAlignment', 'center', ...
-           'EdgeColor', 'none');
+fprintf('\nSNR = %d dB: MIMO-ZF BER = %.2e, MIMO-MMSE BER = %.2e, SISO BER = %.2e\n', ...
+        snr_db, ber_mimo_zf, ber_mimo_mmse, ber_siso);
 
 fprintf('\n=== Simulation Complete ===\n');
-fprintf('MIMO provides spatial multiplexing gain: %d independent data streams\n', Nt);
-fprintf('Final BER at %d dB SNR:\n', snr_db_range(end));
-fprintf('  MIMO-ZF:   %.2e\n', ber_mimo_zf(end));
-fprintf('  MIMO-MMSE: %.2e\n', ber_mimo_mmse(end));
-fprintf('  SISO:      %.2e\n', ber_siso(end));
+fprintf('BER at %d dB SNR:\n', snr_db);
+fprintf('  MIMO-ZF:   %.2e\n', ber_mimo_zf);
+fprintf('  MIMO-MMSE: %.2e\n', ber_mimo_mmse);
+fprintf('  SISO:      %.2e\n', ber_siso);
 
