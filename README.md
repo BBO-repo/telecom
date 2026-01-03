@@ -227,7 +227,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 
 1. **Build the Docker container**:
    ```bash
-   docker build -t telecoms-dev .
+   docker build -t telecom-dev .
    ```
 
 2. **Run the container** (with X11 forwarding for GUI):
@@ -238,21 +238,13 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
      -v /tmp/.X11-unix:/tmp/.X11-unix \
      --privileged \
      -v $(pwd):/workspace \
-     telecoms-dev
+     telecom-dev
    ```
 
 3. **Or use VS Code Dev Containers**:
    - Open the project in VS Code
    - Use the "Reopen in Container" command
    - The `.devcontainer.json` will configure everything automatically
-
-### Verify Installation
-
-Inside the container, verify Octave and packages:
-```octave
-octave --version
-pkg list
-```
 
 ## Script Structure
 
@@ -280,3 +272,7 @@ Most parameters can be modified at the top of each script:
 - **Faster simulation**: Reduce `num_bits`, `num_trials`, or `num_ofdm_symbols`
 - **Better statistics**: Increase `num_trials` or simulation length
 - **Higher accuracy**: Use more samples, longer sequences
+
+## References
+
+- Gilley, J. E. "[Digital Phase Modulation: A Review of Basic Concepts](https://www.efjohnson.com/resources/dyn/files/75832z342fce97/_fn/Digital_Phase_Modulation.pdf)." Transcrypt International, Inc.
