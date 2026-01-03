@@ -4,7 +4,7 @@ A project for developing and optimizing Layer 1 (Physical Layer) algorithms for 
 
 ## Overview
 
-This project focuses on implementing signal processing algorithms for physical layer communication systems, including modulation, demodulation, channel estimation, equalization, and synchronization. The project contains 7 progressive demonstration scripts showcasing increasing complexity, from basic single-carrier systems to advanced multi-carrier OFDM systems with comprehensive receiver algorithms.
+This project focuses on implementing signal processing algorithms for physical layer communication systems, including modulation, demodulation, channel estimation, equalization, and synchronization. The project contains 9 progressive demonstration scripts showcasing increasing complexity, from basic single-carrier systems to advanced multi-carrier OFDM systems with comprehensive receiver algorithms, including MIMO-OFDM systems.
 
 The scripts demonstrate practical implementation of:
 - **Modulation/Demodulation**: BPSK, QPSK, QAM, OFDM
@@ -28,6 +28,7 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 ├── demo_06_ofdm_channel_estimation.m       # Demo 6: OFDM with channel estimation
 ├── demo_07_ofdm_full_sync.m                # Demo 7: OFDM with advanced sync
 ├── demo_08_complete_ofdm_turbo.m           # Demo 8: Complete OFDM with turbo codes
+├── demo_09_mimo_ofdm.m                     # Demo 9: MIMO-OFDM system
 ├── setup_paths.m                 # Path setup helper
 ├── algorithms/                   # Core algorithm implementations
 │   ├── modulation/               # Modulation schemes
@@ -75,7 +76,7 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 
 ### Running Scripts
 
-The root directory contains 8 progressive demonstration scripts showcasing increasing complexity:
+The root directory contains 9 progressive demonstration scripts showcasing increasing complexity:
 
 1. Open the Octave GUI and run the desired script:
    - Navigate to the project directory in Octave
@@ -94,6 +95,7 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 - **Demo 6** (`demo_06_ofdm_channel_estimation.m`): OFDM with channel estimation
 - **Demo 7** (`demo_07_ofdm_full_sync.m`): OFDM with advanced synchronization
 - **Demo 8** (`demo_08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
+- **Demo 9** (`demo_09_mimo_ofdm.m`): MIMO-OFDM system with spatial multiplexing
 
 ## Demonstration Scripts Details
 
@@ -201,6 +203,22 @@ The root directory contains 8 progressive demonstration scripts showcasing incre
 - Full synchronization chain
 - Comprehensive performance analysis
 - Comparison with theoretical limits
+
+---
+
+### Demo 9: MIMO-OFDM System
+**File**: `demo_09_mimo_ofdm.m`  
+
+**Features**:
+- Multiple-input multiple-output (MIMO) configuration
+- Spatial multiplexing with independent data streams per transmit antenna
+- MIMO-OFDM modulation per antenna
+- MIMO channel matrix (Rayleigh fading per subcarrier)
+- Channel estimation using pilot symbols
+- MIMO detection algorithms (Zero-Forcing and MMSE)
+- Spatial multiplexing gain demonstration
+- BER performance comparison (SISO vs MIMO)
+- Channel matrix visualization
 
 ## Docker Development Environment
 
