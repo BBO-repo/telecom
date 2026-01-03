@@ -29,47 +29,47 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 ├── demo_07_ofdm_full_sync.m                # Demo 7: OFDM with advanced sync
 ├── demo_08_complete_ofdm_turbo.m           # Demo 8: Complete OFDM with turbo codes
 ├── demo_09_mimo_ofdm.m                     # Demo 9: MIMO-OFDM system
-├── setup_paths.m                 # Path setup helper
-├── algorithms/                   # Core algorithm implementations
-│   ├── modulation/               # Modulation schemes
-│   │   ├── bpsk_modulate.m       # BPSK modulation
-│   │   ├── qpsk_modulate.m       # QPSK modulation
-│   │   ├── qam_modulate.m        # QAM modulation
-│   │   ├── ofdm_modulate.m       # OFDM modulation
-│   │   ├── pulse_shape.m         # RC/RRC pulse shaping filter
-│   │   └── apply_pulse_shaping.m  # Pulse shaping application
-│   ├── demodulation/             # Demodulation algorithms
-│   │   ├── bpsk_demodulate.m     # BPSK demodulation
-│   │   ├── qpsk_demodulate.m     # QPSK demodulation
-│   │   ├── qam_demodulate.m      # QAM demodulation
-│   │   └── ofdm_demodulate.m     # OFDM demodulation
-│   ├── channel/                  # Channel models and estimation
-│   │   ├── ls_channel_est.m      # Least squares channel estimation
-│   │   ├── mmse_channel_est.m    # MMSE channel estimation
-│   │   └── pilot_interpolation.m # Pilot-based interpolation
-│   ├── equalization/             # Equalization algorithms
-│   │   ├── lms_equalizer.m       # LMS adaptive equalizer
-│   │   ├── zf_equalizer.m        # Zero-forcing equalizer
-│   │   └── mmse_equalizer.m      # MMSE equalizer
-│   ├── coding/                   # Error correction codes
-│   │   ├── turbo_encode.m        # Turbo code encoding
-│   │   └── turbo_decode.m        # Turbo code decoding
-│   └── sync/                     # Synchronization algorithms
-│       ├── timing_sync.m         # Timing synchronization
-│       ├── freq_offset_estimate.m # Frequency offset estimation
-│       ├── freq_offset_correct.m  # Frequency offset correction
-│       └── ofdm_sync_schmidl_cox.m # Schmidl-Cox OFDM sync
-├── utils/                        # Utility functions
-│   ├── generate_data.m           # Random data generation
-│   ├── add_awgn.m                # AWGN channel
-│   ├── rayleigh_fading.m         # Rayleigh fading channel
-│   ├── multipath_channel.m       # Multipath channel
-│   ├── calculate_ber.m           # BER calculation
-│   ├── calculate_evm.m           # EVM calculation
-│   ├── plot_constellation.m      # Constellation plotting
-│   └── plot_ber_curve.m          # BER curve plotting
-├── Dockerfile                    # Container definition
-└── README.md                     # This file
+├── setup_paths.m                           # Path setup helper
+├── algorithms/                             # Core algorithm implementations
+│   ├── modulation/                         # Modulation schemes
+│   │   ├── bpsk_modulate.m                 # BPSK modulation
+│   │   ├── qpsk_modulate.m                 # QPSK modulation
+│   │   ├── qam_modulate.m                  # QAM modulation
+│   │   ├── ofdm_modulate.m                 # OFDM modulation
+│   │   ├── pulse_shape.m                   # RC/RRC pulse shaping filter
+│   │   └── apply_pulse_shaping.m           # Pulse shaping application
+│   ├── demodulation/                       # Demodulation algorithms
+│   │   ├── bpsk_demodulate.m               # BPSK demodulation
+│   │   ├── qpsk_demodulate.m               # QPSK demodulation
+│   │   ├── qam_demodulate.m                # QAM demodulation
+│   │   └── ofdm_demodulate.m               # OFDM demodulation
+│   ├── channel/                            # Channel models and estimation
+│   │   ├── ls_channel_est.m                # Least squares channel estimation
+│   │   ├── mmse_channel_est.m              # MMSE channel estimation
+│   │   └── pilot_interpolation.m           # Pilot-based interpolation
+│   ├── equalization/                       # Equalization algorithms
+│   │   ├── lms_equalizer.m                 # LMS adaptive equalizer
+│   │   ├── zf_equalizer.m                  # Zero-forcing equalizer
+│   │   └── mmse_equalizer.m                # MMSE equalizer
+│   ├── coding/                             # Error correction codes
+│   │   ├── turbo_encode.m                  # Turbo code encoding
+│   │   └── turbo_decode.m                  # Turbo code decoding
+│   └── sync/                               # Synchronization algorithms
+│       ├── timing_sync.m                   # Timing synchronization
+│       ├── freq_offset_estimate.m          # Frequency offset estimation
+│       ├── freq_offset_correct.m           # Frequency offset correction
+│       └── ofdm_sync_schmidl_cox.m         # Schmidl-Cox OFDM sync
+├── utils/                                  # Utility functions
+│   ├── generate_data.m                     # Random data generation
+│   ├── add_awgn.m                          # AWGN channel
+│   ├── rayleigh_fading.m                   # Rayleigh fading channel
+│   ├── multipath_channel.m                 # Multipath channel
+│   ├── calculate_ber.m                     # BER calculation
+│   ├── calculate_evm.m                     # EVM calculation
+│   ├── plot_constellation.m                # Constellation plotting
+│   └── plot_ber_curve.m                    # BER curve plotting
+├── Dockerfile                              # Container definition
+└── README.md                               # This file
 ```
 
 ## Quick Start
