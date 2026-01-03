@@ -90,6 +90,7 @@ fprintf('Estimated symbol start: sample %d (true: %d)\n', symbol_start, timing_o
 rx_corrected_ffo = freq_offset_correct(rx_signal, -ffo_est * N, 1);  % Correct in time domain
 
 fprintf('Estimated fractional FO: %.4f (true: %.4f)\n', ffo_est, freq_offset_frac);
+fprintf('Frequency offset estimation error: %.4f\n', abs(ffo_est - freq_offset_frac));
 
 % Step 3: Integer frequency offset estimation
 % Extract first data symbol
@@ -99,7 +100,7 @@ if symbol_start_adj + N + cp_length <= length(rx_corrected_ffo)
     data_symbol_with_cp = rx_corrected_ffo(symbol_start_adj : symbol_start_adj + N + cp_length - 1);
     data_symbol = data_symbol_with_cp(cp_length + 1 : end);
     data_symbol_freq = fft(data_symbol, N);
-    
+
     % Simple IFO estimation: correlate with known pattern (simplified)
     % In practice, would use dedicated training sequences
     % Here, we'll estimate based on maximum correlation
@@ -135,11 +136,15 @@ if min_length > 0
     fprintf('BER: %.2e\n', ber);
 end
 
+% Calculate and display timing error
+timing_error = abs(symbol_start - (timing_offset + 1));
+fprintf('Timing synchronization error: %d samples\n', timing_error);
+
 %% Visualization
 figure('Position', [100, 100, 1400, 800]);
 
 % Timing metric
-subplot(2, 3, 1);
+subplot(2, 2, 1);
 plot(timing_metric, 'LineWidth', 2);
 hold on;
 plot([symbol_start, symbol_start], ylim, 'r--', 'LineWidth', 2);
@@ -150,18 +155,8 @@ ylabel('Timing Metric', 'FontSize', 11);
 title('Schmidl-Cox Timing Metric', 'FontSize', 12, 'FontWeight', 'bold');
 legend('Metric', 'Estimated', 'True', 'Location', 'northeast');
 
-% Frequency offset estimation
-subplot(2, 3, 2);
-freq_offsets = [freq_offset_frac, abs(ffo_est)];
-bar(1:2, freq_offsets, 'FaceColor', [0.3, 0.6, 0.9]);
-grid on;
-ylabel('Frequency Offset', 'FontSize', 11);
-title('Frequency Offset Estimation', 'FontSize', 12, 'FontWeight', 'bold');
-xticklabels({'True', 'Estimated'});
-legend('Fractional FO', 'Location', 'northeast');
-
 % Received signal (time domain, first few samples)
-subplot(2, 3, 3);
+subplot(2, 2, 2);
 plot(1:min(200, length(rx_signal)), real(rx_signal(1:min(200, length(rx_signal)))), ...
     'LineWidth', 1.5);
 hold on;
@@ -174,7 +169,7 @@ title('Received Signal (Time Domain)', 'FontSize', 12, 'FontWeight', 'bold');
 legend('Received', 'Transmitted', 'Location', 'northeast');
 
 % Constellation: Before synchronization
-subplot(2, 3, 4);
+subplot(2, 2, 3);
 % Extract symbols without sync (for visualization)
 if length(rx_signal) > N + cp_length
     rx_unsync_freq = ofdm_demodulate(rx_signal(timing_offset+1:end), N, cp_length);
@@ -192,7 +187,7 @@ title('Before Synchronization', 'FontSize', 12, 'FontWeight', 'bold');
 axis equal;
 
 % Constellation: After synchronization
-subplot(2, 3, 5);
+subplot(2, 2, 4);
 if length(rx_qam_symbols) > 100
     scatter(real(rx_qam_symbols(1:100)), imag(rx_qam_symbols(1:100)), ...
         20, 'filled', 'MarkerFaceAlpha', 0.6);
@@ -202,15 +197,6 @@ xlabel('In-Phase (I)', 'FontSize', 11);
 ylabel('Quadrature (Q)', 'FontSize', 11);
 title('After Synchronization', 'FontSize', 12, 'FontWeight', 'bold');
 axis equal;
-
-% Timing error
-subplot(2, 3, 6);
-timing_error = abs(symbol_start - (timing_offset + 1));
-bar(1, timing_error, 'FaceColor', [0.8, 0.3, 0.3]);
-grid on;
-ylabel('Timing Error (samples)', 'FontSize', 11);
-title('Timing Synchronization Error', 'FontSize', 12, 'FontWeight', 'bold');
-xticklabels({''});
 
 annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
            'String', 'OFDM with Advanced Synchronization', ...
