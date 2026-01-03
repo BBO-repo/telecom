@@ -89,13 +89,17 @@ tx_bits_for_comp = tx_data_bits(1:length(rx_bits));
 
 %% Performance Analysis
 ber = calculate_ber(tx_bits_for_comp, rx_bits);
+freq_error = abs(estimated_freq_offset - freq_offset_hz);
+timing_error = abs(frame_start - (delay_samples + 1));
 fprintf('BER: %.2e\n', ber);
+fprintf('Frequency offset estimation error: %.6f\n', freq_error);
+fprintf('Timing synchronization error: %d samples\n', timing_error);
 
 %% Visualization
 figure('Position', [100, 100, 1400, 800]);
 
 % Timing correlation
-subplot(2, 3, 1);
+subplot(2, 2, 1);
 plot(correlation, 'LineWidth', 2);
 hold on;
 plot([frame_start, frame_start], ylim, 'r--', 'LineWidth', 2);
@@ -106,48 +110,8 @@ ylabel('Correlation', 'FontSize', 11);
 title('Timing Synchronization', 'FontSize', 12, 'FontWeight', 'bold');
 legend('Correlation', 'Estimated Start', 'True Start', 'Location', 'northeast');
 
-% Constellation: With frequency offset
-subplot(2, 3, 2);
-rx_before_correction = rx_signal(frame_start:frame_start+length(preamble_symbols)-1);
-scatter(real(rx_before_correction), imag(rx_before_correction), 30, 'filled', 'MarkerFaceAlpha', 0.6);
-grid on;
-xlabel('In-Phase (I)', 'FontSize', 11);
-ylabel('Quadrature (Q)', 'FontSize', 11);
-title('Before Frequency Correction', 'FontSize', 12, 'FontWeight', 'bold');
-axis equal;
-
-% Constellation: After frequency correction
-subplot(2, 3, 3);
-scatter(real(rx_data_symbols), imag(rx_data_symbols), 30, 'filled', 'MarkerFaceAlpha', 0.6);
-hold on;
-scatter(real(tx_data_symbols), imag(tx_data_symbols), 100, 'rx', 'LineWidth', 2);
-grid on;
-xlabel('In-Phase (I)', 'FontSize', 11);
-ylabel('Quadrature (Q)', 'FontSize', 11);
-title('After Frequency Correction', 'FontSize', 12, 'FontWeight', 'bold');
-legend('Received', 'Transmitted', 'Location', 'northeast');
-axis equal;
-
-% Frequency offset estimation error
-subplot(2, 3, 4);
-freq_error = abs(estimated_freq_offset - freq_offset_hz);
-bar(1, freq_error, 'FaceColor', [0.8, 0.2, 0.2]);
-grid on;
-ylabel('Frequency Offset Error', 'FontSize', 11);
-title('Frequency Offset Estimation Error', 'FontSize', 12, 'FontWeight', 'bold');
-xticklabels({''});
-
-% Timing error
-subplot(2, 3, 5);
-timing_error = abs(frame_start - (delay_samples + 1));
-bar(1, timing_error, 'FaceColor', [0.2, 0.2, 0.8]);
-grid on;
-ylabel('Timing Error (samples)', 'FontSize', 11);
-title('Timing Synchronization Error', 'FontSize', 12, 'FontWeight', 'bold');
-xticklabels({''});
-
 % Preamble correlation detail
-subplot(2, 3, 6);
+subplot(2, 2, 2);
 plot(frame_start-20:frame_start+20, correlation(frame_start-20:frame_start+20), ...
     'o-', 'LineWidth', 2, 'MarkerSize', 6);
 hold on;
@@ -157,6 +121,28 @@ xlabel('Sample Index', 'FontSize', 11);
 ylabel('Correlation', 'FontSize', 11);
 title('Timing Correlation (Detail)', 'FontSize', 12, 'FontWeight', 'bold');
 legend('Correlation', 'Estimated Start', 'Location', 'northeast');
+
+% Constellation: With frequency offset
+subplot(2, 2, 3);
+rx_before_correction = rx_signal(frame_start:frame_start+length(preamble_symbols)-1);
+scatter(real(rx_before_correction), imag(rx_before_correction), 30, 'filled', 'MarkerFaceAlpha', 0.6);
+grid on;
+xlabel('In-Phase (I)', 'FontSize', 11);
+ylabel('Quadrature (Q)', 'FontSize', 11);
+title('Before Frequency Correction', 'FontSize', 12, 'FontWeight', 'bold');
+axis equal;
+
+% Constellation: After frequency correction
+subplot(2, 2, 4);
+scatter(real(rx_data_symbols), imag(rx_data_symbols), 30, 'filled', 'MarkerFaceAlpha', 0.6);
+hold on;
+scatter(real(tx_data_symbols), imag(tx_data_symbols), 100, 'rx', 'LineWidth', 2);
+grid on;
+xlabel('In-Phase (I)', 'FontSize', 11);
+ylabel('Quadrature (Q)', 'FontSize', 11);
+title('After Frequency Correction', 'FontSize', 12, 'FontWeight', 'bold');
+legend('Received', 'Transmitted', 'Location', 'northeast');
+axis equal;
 
 annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
            'String', 'QPSK with Timing and Frequency Synchronization', ...
