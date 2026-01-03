@@ -75,17 +75,14 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 
 ### Running Scripts
 
-The root directory contains 7 progressive demonstration scripts showcasing increasing complexity:
+The root directory contains 8 progressive demonstration scripts showcasing increasing complexity:
 
-1. Run any demonstration script directly:
-   ```bash
-   octave demo_01_basic_bpsk.m
-   ```
+1. Open the Octave GUI and run the desired script:
+   - Navigate to the project directory in Octave
+   - Open and run any demonstration script (e.g., `demo_01_basic_bpsk.m`)
+   - Each script automatically adds the necessary paths
 
-2. Each script automatically adds the necessary paths. If you encounter path issues, use:
-   ```octave
-   run setup_paths.m
-   ```
+2. If you encounter path issues, run `setup_paths.m` first in the Octave command window.
 
 ### Available Examples
 
