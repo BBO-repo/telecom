@@ -14,7 +14,17 @@ The scripts demonstrate practical implementation of:
 - **Synchronization**: Timing recovery, frequency offset estimation/correction
 - **Channel Estimation**: LS, MMSE methods with interpolation
 
-Each script is self-contained, well-documented, and includes comprehensive visualizations and performance metrics.
+### Available demonstration scripts
+Each script is self-contained, documented, and includes comprehensive visualizations and performance metrics.
+- **Demo 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
+- **Demo 2** (`demo_02_qpsk_pulse_shaping.m`): QPSK pulse shaping visualization
+- **Demo 3** (`demo_03_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
+- **Demo 4** (`demo_04_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
+- **Demo 5** (`demo_05_basic_ofdm.m`): Basic OFDM system
+- **Demo 6** (`demo_06_ofdm_channel_estimation.m`): OFDM with channel estimation
+- **Demo 7** (`demo_07_ofdm_full_sync.m`): OFDM with advanced synchronization
+- **Demo 8** (`demo_08_ofdm_conv_code.m`): Complete OFDM system with convolutional codes
+- **Demo 9** (`demo_09_mimo_ofdm.m`): MIMO-OFDM system with spatial multiplexing
 
 
 ## Project Structure
@@ -86,18 +96,6 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
    - Each script automatically adds the necessary paths
 
 2. If you encounter path issues, run `setup_paths.m` first in the Octave command window.
-
-### Available Examples
-
-- **Demo 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
-- **Demo 2** (`demo_02_qpsk_pulse_shaping.m`): QPSK pulse shaping visualization
-- **Demo 3** (`demo_03_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
-- **Demo 4** (`demo_04_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
-- **Demo 5** (`demo_05_basic_ofdm.m`): Basic OFDM system
-- **Demo 6** (`demo_06_ofdm_channel_estimation.m`): OFDM with channel estimation
-- **Demo 7** (`demo_07_ofdm_full_sync.m`): OFDM with advanced synchronization
-- **Demo 8** (`demo_08_ofdm_conv_code.m`): Complete OFDM system with convolutional codes
-- **Demo 9** (`demo_09_mimo_ofdm.m`): MIMO-OFDM system with spatial multiplexing
 
 ## Demonstration Scripts Details
 
