@@ -46,9 +46,9 @@ for i = 1:num_symbols
     rectangular_waveform(idx_start:idx_end) = tx_symbols(i);
 end
 
-% 2. With pulse shaping: Raised cosine filtered
+% 2. With pulse shaping: Root raised cosine filtered
 pulse_shaped_waveform = apply_pulse_shaping(tx_symbols, samples_per_symbol, ...
-                                            rolloff, filter_span, 'rc');
+                                            rolloff, filter_span, 'rrc');
 
 % Time vector for plotting
 time_rect = (0:length(rectangular_waveform)-1) / samples_per_symbol;

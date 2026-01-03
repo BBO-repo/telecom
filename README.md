@@ -8,6 +8,7 @@ This project focuses on implementing signal processing algorithms for physical l
 
 The scripts demonstrate practical implementation of:
 - **Modulation/Demodulation**: BPSK, QPSK, QAM, OFDM
+- **Pulse Shaping**: Raised Cosine (RC) and Root Raised Cosine (RRC) filters
 - **Error Correction**: Turbo codes
 - **Equalization**: LMS adaptive, ZF, MMSE
 - **Synchronization**: Timing recovery, frequency offset estimation/correction
@@ -33,7 +34,9 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 │   │   ├── bpsk_modulate.m       # BPSK modulation
 │   │   ├── qpsk_modulate.m       # QPSK modulation
 │   │   ├── qam_modulate.m        # QAM modulation
-│   │   └── ofdm_modulate.m       # OFDM modulation
+│   │   ├── ofdm_modulate.m       # OFDM modulation
+│   │   ├── pulse_shape.m         # RC/RRC pulse shaping filter
+│   │   └── apply_pulse_shaping.m  # Pulse shaping application
 │   ├── demodulation/             # Demodulation algorithms
 │   │   ├── bpsk_demodulate.m     # BPSK demodulation
 │   │   ├── qpsk_demodulate.m     # QPSK demodulation
@@ -116,11 +119,13 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 **Features**:
 - QPSK symbol generation
 - Rectangular pulse shaping (no filtering)
-- Raised cosine pulse shaping
+- Root Raised Cosine (RRC) pulse shaping
 - Time domain waveform comparison
 - Frequency domain spectral comparison
 - Eye diagram visualization
 - Constellation diagram
+
+**Note**: This demo uses Root Raised Cosine (RRC) filtering, which is designed for split filtering where half the filter response is applied at the transmitter and half at the receiver. This approach provides zero ISI at symbol sampling instants when combined with a matched RRC filter at the receiver.
 
 ---
 
@@ -282,6 +287,15 @@ Typical BER ranges for reference:
 - **64-QAM at 20 dB SNR**: ~10^-3
 
 ## Algorithm Notes
+
+### Pulse Shaping: Raised Cosine vs Root Raised Cosine
+The project supports two types of pulse shaping filters:
+
+- **Raised Cosine (RC)**: Provides zero ISI at symbol sampling instants when used end-to-end. The RC filter is typically applied entirely at either the transmitter or receiver.
+
+- **Root Raised Cosine (RRC)**: Designed for split filtering, where half the filter response is applied at the transmitter and the other half at the receiver. When an RRC filter is used at both ends, the combined response is equivalent to a Raised Cosine filter, providing zero ISI. This is the preferred approach in practical systems as it distributes the filtering complexity and provides better spectral efficiency.
+
+Both filters are implemented in `pulse_shape.m` and can be applied using `apply_pulse_shaping.m`. The roll-off factor (α) controls the spectral efficiency, with typical values ranging from 0.2 to 0.5.
 
 ### Simplified Implementations
 Some algorithms use simplified implementations for educational purposes:
