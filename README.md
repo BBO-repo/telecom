@@ -191,6 +191,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 - Full receiver chain with sync errors
 - Robust synchronization under impairments
 
+---
 
 ### Demo 8: Complete OFDM System with Turbo Codes
 **File**: `demo_08_complete_ofdm_turbo.m`  

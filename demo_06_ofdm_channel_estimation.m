@@ -14,7 +14,7 @@ close all;
 clc;
 
 %% Configuration Parameters
-N = 64;                        % FFT size
+N = 64;                        % FFT size (number of subcarriers)
 cp_length = 16;                % Cyclic prefix length
 M = 16;                        % 16-QAM
 num_ofdm_symbols = 50;         % Number of OFDM symbols
@@ -52,6 +52,12 @@ tx_bits = generate_data(num_ofdm_symbols * bits_per_data_symbol);
 % QAM modulation
 tx_qam_data = qam_modulate(tx_bits, M);
 
+% Generate deterministic pilot bits (known pattern for channel estimation)
+bits_per_pilot = log2(M);
+pilot_bits = mod((0:num_pilots*num_ofdm_symbols*bits_per_pilot-1), 2);  % Deterministic pattern
+pilot_qam_symbols = qam_modulate(pilot_bits, M);
+pilot_symbols_matrix = reshape(pilot_qam_symbols, num_pilots, num_ofdm_symbols);
+
 % Create OFDM symbols with pilots
 freq_symbols = zeros(N, num_ofdm_symbols);
 for sym_idx = 1:num_ofdm_symbols
@@ -59,10 +65,9 @@ for sym_idx = 1:num_ofdm_symbols
     data_start = (sym_idx - 1) * num_data + 1;
     data_end = sym_idx * num_data;
     freq_symbols(data_indices, sym_idx) = tx_qam_data(data_start:data_end);
-    
-    % Pilot symbols (known: BPSK, alternating)
-    pilot_values = (1 - 2*mod(sym_idx, 2)) * ones(num_pilots, 1);
-    freq_symbols(pilot_indices, sym_idx) = pilot_values;
+
+    % Pilot symbols (known: QAM, deterministic pattern)
+    freq_symbols(pilot_indices, sym_idx) = pilot_symbols_matrix(:, sym_idx);
 end
 
 % OFDM modulation
