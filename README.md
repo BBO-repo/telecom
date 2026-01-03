@@ -20,7 +20,7 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 
 ```
 ├── demo_01_basic_bpsk.m                    # Demo 1: Basic BPSK system
-├── demo_02_basic_qpsk.m                    # Demo 2: QPSK modulation system
+├── demo_02_qpsk_pulse_shaping.m            # Demo 2: QPSK pulse shaping visualization
 ├── demo_03_16qam_with_lms_equalizer.m      # Demo 3: 16-QAM with LMS equalizer
 ├── demo_04_sc_sync_qpsk.m                  # Demo 4: QPSK with synchronization
 ├── demo_05_basic_ofdm.m                    # Demo 5: Basic OFDM system
@@ -87,7 +87,7 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 ### Available Examples
 
 - **Demo 1** (`demo_01_basic_bpsk.m`): Basic BPSK system with AWGN channel
-- **Demo 2** (`demo_02_basic_qpsk.m`): QPSK modulation system
+- **Demo 2** (`demo_02_qpsk_pulse_shaping.m`): QPSK pulse shaping visualization
 - **Demo 3** (`demo_03_16qam_with_lms_equalizer.m`): 16-QAM with adaptive equalization
 - **Demo 4** (`demo_04_sc_sync_qpsk.m`): QPSK with timing and frequency synchronization
 - **Demo 5** (`demo_05_basic_ofdm.m`): Basic OFDM system
@@ -110,15 +110,17 @@ The root directory contains 7 progressive demonstration scripts showcasing incre
 
 ---
 
-### Demo 2: QPSK Modulation System
-**File**: `demo_02_basic_qpsk.m`
+### Demo 2: QPSK Pulse Shaping Visualization
+**File**: `demo_02_qpsk_pulse_shaping.m`
 
 **Features**:
-- QPSK modulation/demodulation
-- AWGN channel
-- BER performance analysis
-- Theoretical BER comparison
-- Constellation visualization
+- QPSK symbol generation
+- Rectangular pulse shaping (no filtering)
+- Raised cosine pulse shaping
+- Time domain waveform comparison
+- Frequency domain spectral comparison
+- Eye diagram visualization
+- Constellation diagram
 
 ---
 
