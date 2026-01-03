@@ -1,4 +1,4 @@
-# Telecoms L1 Algorithm Development Project
+# Layer 1 (Physical Layer) algorithms for telecommunications systems
 
 A project for developing and optimizing Layer 1 (Physical Layer) algorithms for telecommunications systems using GNU Octave.
 
@@ -9,7 +9,7 @@ This project focuses on implementing signal processing algorithms for physical l
 The scripts demonstrate practical implementation of:
 - **Modulation/Demodulation**: BPSK, QPSK, QAM, OFDM
 - **Pulse Shaping**: Raised Cosine (RC) and Root Raised Cosine (RRC) filters
-- **Error Correction**: Turbo codes
+- **Error Correction**: Convolutional codes
 - **Equalization**: LMS adaptive, ZF, MMSE
 - **Synchronization**: Timing recovery, frequency offset estimation/correction
 - **Channel Estimation**: LS, MMSE methods with interpolation
@@ -27,7 +27,7 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 ├── demo_05_basic_ofdm.m                    # Demo 5: Basic OFDM system
 ├── demo_06_ofdm_channel_estimation.m       # Demo 6: OFDM with channel estimation
 ├── demo_07_ofdm_full_sync.m                # Demo 7: OFDM with advanced sync
-├── demo_08_complete_ofdm_turbo.m           # Demo 8: Complete OFDM with turbo codes
+├── demo_08_ofdm_conv_code.m                # Demo 8: Complete OFDM with convolutional codes
 ├── demo_09_mimo_ofdm.m                     # Demo 9: MIMO-OFDM system
 ├── setup_paths.m                           # Path setup helper
 ├── algorithms/                             # Core algorithm implementations
@@ -53,7 +53,9 @@ Each script is self-contained, well-documented, and includes comprehensive visua
 │   │   └── mmse_equalizer.m                # MMSE equalizer
 │   ├── coding/                             # Error correction codes
 │   │   ├── turbo_encode.m                  # Turbo code encoding
-│   │   └── turbo_decode.m                  # Turbo code decoding
+│   │   ├── turbo_decode.m                  # Turbo code decoding
+│   │   ├── conv_encode.m                   # Convolutional code encoding
+│   │   └── conv_decode.m                   # Convolutional code decoding (Viterbi)
 │   └── sync/                               # Synchronization algorithms
 │       ├── timing_sync.m                   # Timing synchronization
 │       ├── freq_offset_estimate.m          # Frequency offset estimation
@@ -94,7 +96,7 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 - **Demo 5** (`demo_05_basic_ofdm.m`): Basic OFDM system
 - **Demo 6** (`demo_06_ofdm_channel_estimation.m`): OFDM with channel estimation
 - **Demo 7** (`demo_07_ofdm_full_sync.m`): OFDM with advanced synchronization
-- **Demo 8** (`demo_08_complete_ofdm_turbo.m`): Complete OFDM system with turbo codes
+- **Demo 8** (`demo_08_ofdm_conv_code.m`): Complete OFDM system with convolutional codes
 - **Demo 9** (`demo_09_mimo_ofdm.m`): MIMO-OFDM system with spatial multiplexing
 
 ## Demonstration Scripts Details
@@ -193,15 +195,17 @@ The root directory contains 9 progressive demonstration scripts showcasing incre
 
 ---
 
-### Demo 8: Complete OFDM System with Turbo Codes
-**File**: `demo_08_complete_ofdm_turbo.m`  
+### Demo 8: Complete OFDM System with Convolutional Codes
+**File**: `demo_08_ofdm_conv_code.m`  
 
 **Features**:
 - Full OFDM system with 64-QAM
-- Turbo code encoding/decoding
+- Convolutional code encoding (rate 1/2)
+- Viterbi soft-decision decoding
 - Channel estimation with interpolation
 - Advanced equalization (MMSE)
 - Full synchronization chain
+- Soft-decision LLR extraction from QAM symbols
 - Comprehensive performance analysis
 - Comparison with theoretical limits
 

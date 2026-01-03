@@ -1,8 +1,8 @@
-%% Demo 8: Complete OFDM System with Turbo Codes
+%% Demo 8: Complete OFDM System with Convolution Codes
 %
 % This script demonstrates a complete OFDM system with:
 %   - Full OFDM system (64-QAM)
-%   - Turbo code encoding/decoding
+%   - Convolutional code encoding/decoding (rate 1/2)
 %   - Channel estimation with interpolation
 %   - Advanced equalization (MMSE)
 %   - Full synchronization chain
@@ -20,12 +20,11 @@ N = 64;                        % FFT size
 cp_length = 16;                % Cyclic prefix length
 M = 64;                        % 64-QAM modulation
 num_ofdm_symbols = 30;         % Number of OFDM symbols
-snr_db = 25;                   % SNR in dB
+snr_db = 0;                    % SNR in dB
 pilot_spacing = 8;             % Pilot spacing
 
-% Turbo code parameters
-turbo_rate = 1/3;              % Code rate
-num_turbo_iter = 5;            % Turbo decoding iterations
+% Convolutional code parameters
+conv_rate = 1/2;               % Code rate (1/2)
 
 % Synchronization parameters
 freq_offset_frac = 0.05;
@@ -44,10 +43,10 @@ addpath('./algorithms/channel');
 addpath('./algorithms/equalization');
 addpath('./algorithms/sync');
 
-fprintf('=== Demo 8: Complete OFDM System with Turbo Codes ===\n');
+fprintf('=== Demo 8: Complete OFDM System with Convolution Codes ===\n');
 fprintf('FFT size: %d\n', N);
 fprintf('Modulation: %d-QAM\n', M);
-fprintf('Turbo code rate: %.2f\n', turbo_rate);
+fprintf('Convolutional code rate: %.2f\n', conv_rate);
 fprintf('SNR: %d dB\n', snr_db);
 
 %% Generate pilot positions
@@ -58,34 +57,25 @@ num_data = length(data_indices);
 
 %% Transmitter
 % Generate random data bits
+% For rate 1/2, encoded_bits ≈ 2 * data_bits (plus tail bits for constraint length 3)
 bits_per_data_symbol = log2(M) * num_data;
-total_data_bits = num_ofdm_symbols * bits_per_data_symbol;
+total_encoded_bits_needed = num_ofdm_symbols * bits_per_data_symbol;
+% Account for rate 1/2: data_bits = (encoded_bits - tail_bits) / 2
+% Tail bits: constraint_length-1 = 2 bits, which produce 4 encoded bits (2 outputs)
+tail_encoded_bits = 2 * (3 - 1);  % 2 outputs * (constraint_length - 1)
+total_data_bits = floor((total_encoded_bits_needed - tail_encoded_bits) / 2);
 tx_data_bits = generate_data(total_data_bits);
 
-% Turbo encoding
-fprintf('Turbo encoding...\n');
-% Simplified turbo encoding (for demonstration)
-% Real implementation would use proper turbo encoder
-tx_encoded_bits = [];
-for i = 1:floor(length(tx_data_bits)/100)
-    block_start = (i-1)*100 + 1;
-    block_end = i*100;
-    block = tx_data_bits(block_start:block_end);
-    encoded_block = [block, block, block];  % Simplified: rate 1/3 repetition
-    tx_encoded_bits = [tx_encoded_bits, encoded_block];
-end
-% Handle remainder
-if length(tx_data_bits) > floor(length(tx_data_bits)/100)*100
-    remainder = tx_data_bits(floor(length(tx_data_bits)/100)*100+1:end);
-    tx_encoded_bits = [tx_encoded_bits, remainder, remainder, remainder];
-end
+% Convolutional encoding (rate 1/2)
+fprintf('Convolutional encoding...\n');
+tx_encoded_bits = conv_encode(tx_data_bits);
 
-% Adjust encoded bits to fit OFDM symbols
+% Adjust encoded bits to fit OFDM symbols exactly
 bits_needed = num_ofdm_symbols * bits_per_data_symbol;
 if length(tx_encoded_bits) > bits_needed
     tx_encoded_bits = tx_encoded_bits(1:bits_needed);
 else
-    % Pad with zeros
+    % Pad with zeros (will be handled by decoder)
     tx_encoded_bits = [tx_encoded_bits, zeros(1, bits_needed - length(tx_encoded_bits))];
 end
 
@@ -99,7 +89,7 @@ for sym_idx = 1:num_ofdm_symbols
     data_start = (sym_idx - 1) * num_data + 1;
     data_end = sym_idx * num_data;
     freq_symbols(data_indices, sym_idx) = tx_qam_data(data_start:data_end);
-    
+
     % Pilot symbols
     pilot_values = (1 - 2*mod(sym_idx, 2)) * ones(num_pilots, 1);
     freq_symbols(pilot_indices, sym_idx) = pilot_values;
@@ -167,30 +157,87 @@ H_data_repeated = repmat(H_data, num_rx_data_symbols, 1);
 % MMSE equalization
 eq_data = mmse_equalizer(rx_data_vector, H_data_repeated, snr_db);
 
-%% Demodulation
-rx_qam_bits = qam_demodulate(eq_data, M);
+%% Demodulation and Soft Decision Extraction
+% Compute LLRs (Log-Likelihood Ratios) for soft-decision decoding
+fprintf('Computing soft decisions for Viterbi decoding...\n');
 
-%% Turbo Decoding
-fprintf('Turbo decoding...\n');
-% Simplified turbo decoding
-% Real implementation would use proper turbo decoder
-rx_decoded_bits = [];
-bits_per_block = 300;  % 100 original * 3 (rate 1/3)
-for i = 1:floor(length(rx_qam_bits)/bits_per_block)
-    block_start = (i-1)*bits_per_block + 1;
-    block_end = i*bits_per_block;
-    block = rx_qam_bits(block_start:block_end);
-    
-    % Simplified: majority vote across 3 copies
-    if length(block) >= 3
-        decoded_block = zeros(1, length(block)/3);
-        for j = 1:length(decoded_block)
-            idx = (j-1)*3 + 1;
-            decoded_block(j) = mode(block(idx:min(idx+2, length(block))));
+% Generate constellation for LLR computation
+bits_per_symbol = log2(M);
+sqrt_M = sqrt(M);
+levels = -sqrt_M + 1 : 2 : sqrt_M - 1;
+
+% Normalize equalized symbols (reverse energy scaling)
+energy = 1;
+current_energy = 2*(M-1)/3;
+eq_data_norm = eq_data / sqrt(energy / current_energy);
+
+% Compute LLRs for each bit in each symbol
+num_symbols = length(eq_data_norm);
+rx_llrs = zeros(1, num_symbols * bits_per_symbol);
+
+for i = 1:num_symbols
+    symbol = eq_data_norm(i);
+    I = real(symbol);
+    Q = imag(symbol);
+
+    % For each bit position, compute LLR
+    % LLR = log(P(bit=0) / P(bit=1))
+    % Approximate using distance to nearest constellation points
+    for bit_pos = 1:bits_per_symbol
+        % Determine which bit this is (I or Q component)
+        if bit_pos <= bits_per_symbol/2
+            % I component bits
+            component = I;
+            bit_idx_in_component = bit_pos;
+            num_bits_in_component = bits_per_symbol/2;
+        else
+            % Q component bits
+            component = Q;
+            bit_idx_in_component = bit_pos - bits_per_symbol/2;
+            num_bits_in_component = bits_per_symbol/2;
         end
-        rx_decoded_bits = [rx_decoded_bits, decoded_block];
+
+        % Find distance to nearest level where this bit is 0
+        % and nearest level where this bit is 1
+        min_dist_0 = inf;
+        min_dist_1 = inf;
+
+        for level_idx = 1:length(levels)
+            level = levels(level_idx);
+            % Convert level index to binary (0-indexed)
+            level_bin_idx = level_idx - 1;
+            % Get bit value at this position
+            bit_value = mod(floor(level_bin_idx / 2^(num_bits_in_component - bit_idx_in_component)), 2);
+
+            dist = abs(component - level);
+
+            if bit_value == 0 && dist < min_dist_0
+                min_dist_0 = dist;
+            elseif bit_value == 1 && dist < min_dist_1
+                min_dist_1 = dist;
+            end
+        end
+
+        % Compute approximate LLR
+        % LLR ≈ (min_dist_1^2 - min_dist_0^2) / (2*sigma^2)
+        % For simplicity, use distance difference scaled by SNR
+        sigma_est = 1 / sqrt(10^(snr_db/10));  % Rough noise estimate
+        if sigma_est > 0
+            llr = (min_dist_1^2 - min_dist_0^2) / (2 * sigma_est^2);
+        else
+            llr = (min_dist_1 - min_dist_0) * 10;  % Fallback
+        end
+
+        rx_llrs((i-1)*bits_per_symbol + bit_pos) = llr;
     end
 end
+
+% Also get hard bits for comparison
+rx_qam_bits = qam_demodulate(eq_data, M);
+
+%% Convolutional Decoding (Soft Decision Viterbi)
+fprintf('Convolutional decoding (Viterbi soft-decision)...\n');
+rx_decoded_bits = conv_decode(rx_llrs, [], [], true);  % is_soft = true
 
 %% Performance Analysis
 min_length = min(length(tx_data_bits), length(rx_decoded_bits));
@@ -282,7 +329,7 @@ ylabel('|h[n]|', 'FontSize', 11);
 title('Channel Impulse Response', 'FontSize', 12, 'FontWeight', 'bold');
 
 annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
-           'String', 'Complete OFDM System with Turbo Codes', ...
+           'String', 'Complete OFDM System with Convolution Codes', ...
            'FontSize', 16, 'FontWeight', 'bold', ...
            'HorizontalAlignment', 'center', ...
            'EdgeColor', 'none');
@@ -290,7 +337,8 @@ annotation('textbox', [0.4, 0.95, 0.2, 0.05], ...
 fprintf('\n=== Simulation Complete ===\n');
 fprintf('System successfully demonstrates:\n');
 fprintf('  - OFDM modulation/demodulation\n');
-fprintf('  - Turbo coding\n');
+fprintf('  - Convolutional coding (rate 1/2)\n');
+fprintf('  - Viterbi soft-decision decoding\n');
 fprintf('  - Channel estimation\n');
 fprintf('  - MMSE equalization\n');
 fprintf('  - Full synchronization\n');
