@@ -48,11 +48,36 @@ function H_est = mmse_channel_est(rx_pilots, tx_pilots, snr_db, R_hh)
     % MMSE estimate
     H_est = rx_pilots .* mmse_weight;
     
-    % If correlation matrix provided, apply smoothing (simplified)
+    % If correlation matrix provided, apply correlation-based MMSE smoothing
     if nargin >= 4 && ~isempty(R_hh)
-        % For frequency-domain, would apply correlation-based smoothing
-        % Simplified: just return the basic MMSE estimate
-        % Full implementation would require matrix operations
+        % Get dimensions
+        [N_pilots, N_symbols] = size(rx_pilots);
+        
+        % Ensure R_hh is the correct size
+        if size(R_hh, 1) ~= N_pilots || size(R_hh, 2) ~= N_pilots
+            error('mmse_channel_est: R_hh must be N_pilots x N_pilots matrix');
+        end
+        
+        % Compute LS estimate first: H_LS = Y / X
+        epsilon = 1e-10;
+        H_ls = rx_pilots ./ (tx_pilots + epsilon);
+        
+        % Process each symbol (column) separately
+        H_est = zeros(size(H_ls));
+        for sym_idx = 1:N_symbols
+            % Extract LS estimate for this symbol
+            H_ls_sym = H_ls(:, sym_idx);
+            tx_pilots_sym = tx_pilots(:, sym_idx);
+            
+            % Compute diagonal matrix: diag(1/|X|^2)
+            X_power_inv = 1 ./ (abs(tx_pilots_sym).^2 + epsilon);
+            D_inv = diag(X_power_inv);
+            
+            % MMSE with correlation: H_MMSE = R_hh * (R_hh + sigma_n^2 * D_inv)^(-1) * H_LS
+            % This accounts for both noise and channel correlation
+            R_mmse = R_hh + sigma_n_sq * D_inv;
+            H_est(:, sym_idx) = R_hh * (R_mmse \ H_ls_sym);
+        end
     end
 end
 
