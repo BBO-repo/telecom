@@ -239,27 +239,13 @@ pkg list
 
 All scripts follow a consistent structure:
 
-1. **Header Comments**: Purpose and features
-2. **Configuration**: Parameters at the top (easy to modify)
-3. **Transmitter**: Data generation, encoding, modulation
-4. **Channel**: AWGN, fading, multipath, impairments
-5. **Receiver**: Synchronization, equalization, demodulation, decoding
-6. **Performance Analysis**: BER, EVM, throughput metrics
-7. **Visualization**: Plots, constellation diagrams, comparison charts
-
-## Output and Visualization
-
-Each script generates:
-- **Console Output**: Performance metrics, BER values, synchronization results
-- **Figure Windows**: Multiple plots including:
-  - BER curves (log scale)
-  - Constellation diagrams
-  - Channel responses (time/frequency domain)
-  - Synchronization metrics
-  - Comparison plots (with/without techniques)
-  - Convergence plots (for adaptive algorithms)
-
-**Note**: Scripts use `figure()` which opens new windows. If running in a headless environment, configure Octave appropriately or use `graphics_toolkit('gnuplot')` for alternative plotting.
+- **Header Comments**: Purpose and features
+- **Configuration**: Parameters at the top (easy to modify)
+- **Transmitter**: Data generation, encoding, modulation
+- **Channel**: AWGN, fading, multipath, impairments
+- **Receiver**: Synchronization, equalization, demodulation, decoding
+- **Performance Analysis**: BER, EVM, throughput metrics
+- **Visualization**: Plots, constellation diagrams, comparison charts
 
 ## Customization
 
@@ -275,33 +261,3 @@ Most parameters can be modified at the top of each script:
 - **Faster simulation**: Reduce `num_bits`, `num_trials`, or `num_ofdm_symbols`
 - **Better statistics**: Increase `num_trials` or simulation length
 - **Higher accuracy**: Use more samples, longer sequences
-
-### Expected BER Values
-Typical BER ranges for reference:
-- **BPSK at 10 dB SNR**: ~10^-3
-- **QPSK at 10 dB SNR**: ~10^-3
-- **16-QAM at 15 dB SNR**: ~10^-4
-- **64-QAM at 20 dB SNR**: ~10^-3
-
-## Algorithm Notes
-
-### Pulse Shaping: Raised Cosine vs Root Raised Cosine
-The project supports two types of pulse shaping filters:
-
-- **Raised Cosine (RC)**: Provides zero ISI at symbol sampling instants when used end-to-end. The RC filter is typically applied entirely at either the transmitter or receiver.
-
-- **Root Raised Cosine (RRC)**: Designed for split filtering, where half the filter response is applied at the transmitter and the other half at the receiver. When an RRC filter is used at both ends, the combined response is equivalent to a Raised Cosine filter, providing zero ISI. This is the preferred approach in practical systems as it distributes the filtering complexity and provides better spectral efficiency.
-
-Both filters are implemented in `pulse_shape.m` and can be applied using `apply_pulse_shaping.m`. The roll-off factor (α) controls the spectral efficiency, with typical values ranging from 0.2 to 0.5.
-
-### Simplified Implementations
-Some algorithms use simplified implementations for educational purposes:
-- **Turbo codes**: Simplified iterative decoding (Demo 8)
-- **Channel models**: Simplified multipath representation
-
-### Theoretical Comparisons
-Scripts compare results with theoretical limits where applicable:
-- **BPSK**: BER = 0.5 * erfc(√SNR)
-- **QPSK**: Similar to BPSK (same power efficiency)
-- **16-QAM/64-QAM**: Approximate theoretical formulas
-
