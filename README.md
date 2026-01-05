@@ -273,3 +273,7 @@ Most parameters can be modified at the top of each script:
 ## References
 
 - Gilley, J. E. "[Digital Phase Modulation: A Review of Basic Concepts](https://www.efjohnson.com/resources/dyn/files/75832z342fce97/_fn/Digital_Phase_Modulation.pdf)." Transcrypt International, Inc.
+- Proakis, J. G., & Salehi, M. "Digital Communications", 5th ed., McGraw-Hill, 2008. (Zero-Forcing and MMSE equalization, channel estimation, timing and frequency synchronization)
+- Haykin, S. "Adaptive Filter Theory", 5th ed., Prentice Hall, 2013. (LMS adaptive equalization)
+- Lin, S., & Costello, D. J. "Error Control Coding", 2nd ed., Prentice Hall, 2004. (Hamming codes, convolutional codes, turbo codes, LDPC codes)
+
