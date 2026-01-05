@@ -75,9 +75,7 @@ Each script is self-contained, documented, and includes comprehensive visualizat
 │   ├── generate_data.m                     # Random data generation
 │   ├── add_awgn.m                          # AWGN channel
 │   ├── calculate_ber.m                     # BER calculation
-│   ├── calculate_evm.m                     # EVM calculation
-│   ├── plot_constellation.m                # Constellation plotting
-│   └── plot_ber_curve.m                    # BER curve plotting
+│   └── calculate_evm.m                     # EVM calculation
 ├── Dockerfile                              # Container definition
 └── README.md                               # This file
 ```
