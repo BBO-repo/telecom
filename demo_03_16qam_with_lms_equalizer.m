@@ -29,6 +29,7 @@ channel_delays = [0, 1, 2, 3];
 addpath('./utils');
 addpath('./algorithms/modulation');
 addpath('./algorithms/demodulation');
+addpath('./algorithms/channel');
 addpath('./algorithms/equalization');
 
 fprintf('=== Demo 3: 16-QAM with LMS Equalization ===\n');

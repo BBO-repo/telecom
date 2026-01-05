@@ -56,14 +56,14 @@ Each script is self-contained, documented, and includes comprehensive visualizat
 │   ├── channel/                            # Channel models and estimation
 │   │   ├── ls_channel_est.m                # Least squares channel estimation
 │   │   ├── mmse_channel_est.m              # MMSE channel estimation
-│   │   └── pilot_interpolation.m           # Pilot-based interpolation
+│   │   ├── pilot_interpolation.m           # Pilot-based interpolation
+│   │   ├── rayleigh_fading.m               # Rayleigh fading channel
+│   │   └── multipath_channel.m             # Multipath channel
 │   ├── equalization/                       # Equalization algorithms
 │   │   ├── lms_equalizer.m                 # LMS adaptive equalizer
 │   │   ├── zf_equalizer.m                  # Zero-forcing equalizer
 │   │   └── mmse_equalizer.m                # MMSE equalizer
 │   ├── coding/                             # Error correction codes
-│   │   ├── turbo_encode.m                  # Turbo code encoding
-│   │   ├── turbo_decode.m                  # Turbo code decoding
 │   │   ├── conv_encode.m                   # Convolutional code encoding
 │   │   └── conv_decode.m                   # Convolutional code decoding (Viterbi)
 │   └── sync/                               # Synchronization algorithms
@@ -74,8 +74,6 @@ Each script is self-contained, documented, and includes comprehensive visualizat
 ├── utils/                                  # Utility functions
 │   ├── generate_data.m                     # Random data generation
 │   ├── add_awgn.m                          # AWGN channel
-│   ├── rayleigh_fading.m                   # Rayleigh fading channel
-│   ├── multipath_channel.m                 # Multipath channel
 │   ├── calculate_ber.m                     # BER calculation
 │   ├── calculate_evm.m                     # EVM calculation
 │   ├── plot_constellation.m                # Constellation plotting
