@@ -14,11 +14,12 @@ close all;
 clc;
 
 %% Configuration Parameters
-N = 64;                        % FFT size
+N = 128;                       % FFT size
 cp_length = 16;                % Cyclic prefix length
 M = 16;                        % 16-QAM
 num_ofdm_symbols = 20;         % Number of OFDM symbols
 snr_db = 20;                   % SNR in dB
+rng(1234);                     % Force random seed for reproductibility
 
 % Synchronization impairments
 freq_offset_frac = 0.1;        % Fractional frequency offset (normalized)
@@ -50,7 +51,9 @@ tx_qam_symbols = qam_modulate(tx_bits, M);
 freq_symbols = reshape(tx_qam_symbols, N, num_ofdm_symbols);
 
 % Add training symbol (Schmidl-Cox: two identical halves)
-training_symbol_freq = [randn(N/2, 1); randn(N/2, 1)];  % Two identical halves
+% CRITICAL: For Schmidl-Cox, the two halves MUST be identical
+half_symbol_freq = randn(N/2, 1) + 1j*randn(N/2, 1);  % Generate one half
+training_symbol_freq = [half_symbol_freq; half_symbol_freq];  % Two IDENTICAL halves
 training_symbol_time = ifft(training_symbol_freq, N);
 training_symbol = [training_symbol_time(end-cp_length+1:end); training_symbol_time];
 
@@ -83,41 +86,81 @@ fprintf('Performing synchronization...\n');
 [timing_metric, ffo_est] = ofdm_sync_schmidl_cox(rx_signal, N);
 
 % Find symbol start (peak of timing metric)
-[~, symbol_start] = max(timing_metric);
+% Use a threshold to avoid false peaks (peak should be > 0.5 for good SNR)
+[peak_value, symbol_start] = max(timing_metric);
+if peak_value < 0.3
+    warning('Low timing metric peak (%.3f). Synchronization may be unreliable.', peak_value);
+end
 fprintf('Estimated symbol start: sample %d (true: %d)\n', symbol_start, timing_offset + 1);
 
 % Step 2: Correct fractional frequency offset
-rx_corrected_ffo = freq_offset_correct(rx_signal, -ffo_est * N, 1);  % Correct in time domain
+% The FFO is normalized by subcarrier spacing (1/N)
+% Correction: exp(-j*2*pi*ffo_est*t/N) where t starts from estimated symbol position
+% But note: frequency offset was applied from the beginning of tx_with_delay,
+% so correction must also be from the beginning
+rx_corrected_ffo = rx_signal;
+t_correction = (0:length(rx_signal)-1)';
+rx_corrected_ffo = rx_corrected_ffo .* exp(-1j * 2 * pi * ffo_est * t_correction / N);
 
 fprintf('Estimated fractional FO: %.4f (true: %.4f)\n', ffo_est, freq_offset_frac);
 fprintf('Frequency offset estimation error: %.4f\n', abs(ffo_est - freq_offset_frac));
 
-% Step 3: Integer frequency offset estimation
-% Extract first data symbol
-symbol_start_adj = symbol_start + cp_length + N;  % Skip training symbol
-if symbol_start_adj + N + cp_length <= length(rx_corrected_ffo)
-    % Extract one data symbol
-    data_symbol_with_cp = rx_corrected_ffo(symbol_start_adj : symbol_start_adj + N + cp_length - 1);
-    data_symbol = data_symbol_with_cp(cp_length + 1 : end);
-    data_symbol_freq = fft(data_symbol, N);
+% Step 3: Extract synchronized signal from estimated start
+rx_sync = rx_corrected_ffo(symbol_start:end);
 
-    % Simple IFO estimation: correlate with known pattern (simplified)
-    % In practice, would use dedicated training sequences
-    % Here, we'll estimate based on maximum correlation
-    ifo_est = 0;  % Simplified - would use cross-correlation method
+% Step 4: Integer frequency offset estimation using training symbol
+% IFO estimation: correlate received training symbol FFT with expected pattern
+% Integer FO causes circular shift in frequency domain
+ifo_est = 0;
+if length(rx_sync) >= N + cp_length
+    % Extract training symbol (first symbol after timing sync)
+    training_rx_with_cp = rx_sync(1 : N + cp_length);
+    training_rx = training_rx_with_cp(cp_length + 1 : end);
+    training_rx_freq = fft(training_rx, N);
+
+    % Expected training symbol frequency domain (known at transmitter)
+    % Use the known training_symbol_freq for correlation
+    % IFO causes circular shift: find shift that maximizes correlation
+    max_corr = 0;
+    best_shift = 0;
+
+    % Search over possible integer frequency offsets (-N/2 to N/2)
+    % In practice, this range can be limited based on expected maximum IFO
+    search_range = min(15, floor(N/2));  % Limit search for efficiency
+    for shift = -search_range:search_range
+        % Circularly shift received signal in frequency domain
+        % Positive IFO shifts subcarriers up, so we test negative shifts
+        training_rx_shifted = circshift(training_rx_freq, -shift);
+
+        % Compute normalized correlation with expected training symbol
+        % Use cross-correlation: sum(conj(expected) .* received_shifted)
+        numerator = abs(sum(conj(training_symbol_freq) .* training_rx_shifted));
+        denominator = sqrt(sum(abs(training_symbol_freq).^2) * sum(abs(training_rx_shifted).^2)) + eps;
+        correlation = numerator / denominator;
+
+        if correlation > max_corr
+            max_corr = correlation;
+            best_shift = shift;
+        end
+    end
+
+    ifo_est = best_shift;
+    fprintf('IFO correlation peak: %.4f at shift %d\n', max_corr, ifo_est);
 else
-    ifo_est = 0;
+    fprintf('Warning: Signal too short for IFO estimation\n');
 end
 
-% Step 4: Correct integer frequency offset (circular shift in freq domain)
-rx_sync = rx_corrected_ffo(symbol_start:end);  % Extract from symbol start
+fprintf('Estimated integer FO: %d subcarriers (true: %d)\n', ifo_est, freq_offset_int);
+fprintf('Integer FO estimation error: %d subcarriers\n', abs(ifo_est - freq_offset_int));
 
-% OFDM demodulation
+% Step 5: OFDM demodulation
 rx_freq_symbols = ofdm_demodulate(rx_sync, N, cp_length);
 
-% Correct IFO (circular shift)
+% Step 6: Correct integer frequency offset (circular shift in frequency domain)
+% IFO causes circular shift of subcarriers in frequency domain
+% Positive IFO means subcarriers are shifted up, so we shift down to correct
 if ifo_est ~= 0
-    rx_freq_symbols = circshift(rx_freq_symbols, -ifo_est);
+    rx_freq_symbols = circshift(rx_freq_symbols, -ifo_est, 1);
 end
 
 % Extract only data symbols (skip training)

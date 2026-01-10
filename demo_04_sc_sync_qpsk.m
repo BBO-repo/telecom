@@ -19,6 +19,7 @@ preamble_length = 64;          % Preamble length (symbols)
 snr_db = 15;                   % SNR in dB
 freq_offset_hz = 0.01;         % Frequency offset (normalized)
 fs = 1;                        % Sampling frequency (normalized)
+rng(1234);                     % Force random seed for reproductibility
 
 % Add paths
 addpath('./utils');

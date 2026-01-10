@@ -71,10 +71,14 @@ for snr_idx = 1:length(snr_db_range)
         rx_bits = qam_demodulate(rx_qam_symbols, M);
 
         %% Performance Analysis
-        % Calculate errors
-        min_length = min(length(tx_bits), length(rx_bits));
-        errors = errors + sum(tx_bits(1:min_length) ~= rx_bits(1:min_length));
-        total_bits = total_bits + min_length;
+        % Verify that tx_bits and rx_bits have the same length
+        assert(length(tx_bits) == length(rx_bits), ...
+            'tx_bits and rx_bits must have the same length (tx: %d, rx: %d)', ...
+            length(tx_bits), length(rx_bits));
+        
+        % Calculate errors (vectors are guaranteed to have same length by assertion above)
+        errors = errors + sum(tx_bits ~= rx_bits);
+        total_bits = total_bits + length(tx_bits);
     end
 
     % Calculate BER
@@ -85,8 +89,11 @@ end
 %% Theoretical BER for 16-QAM
 snr_linear = 10.^(snr_db_range/10);
 % Approximate theoretical BER for 16-QAM in AWGN
-% qfunc(x) = 0.5*erfc(x/sqrt(2))
-ber_16qam_theoretical = 1.5 * 0.5 * erfc(sqrt(0.4 * snr_linear) / sqrt(2));
+% Formula: BER ≈ (3/4) * Q(√(3*log2(M)*Es/N0/(M-1)))
+% For 16-QAM: M=16, log2(M)=4, so BER ≈ (3/4) * Q(√(0.8*Es/N0))
+% Q(x) = 0.5*erfc(x/sqrt(2))
+% Therefore: BER ≈ 0.375 * erfc(√(0.8*Es/N0) / √2)
+ber_16qam_theoretical = 0.375 * erfc(sqrt(0.8 * snr_linear) / sqrt(2));
 
 %% Visualization
 figure('Position', [100, 100, 1400, 600]);
