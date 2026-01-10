@@ -31,7 +31,7 @@ Nt = 4;                        % Number of transmit antennas
 Nr = 4;                        % Number of receive antennas
 
 % Simulation parameters
-snr_db = -10;                  % SNR in dB
+snr_db = 10;                   % SNR in dB
 num_trials = 5;                % Trials for averaging over channel realizations
 
 % Add paths
@@ -80,6 +80,18 @@ for trial = 1:num_trials
             tx_qam_data_mimo{tx_ant} = qam_modulate(tx_bits_mimo{tx_ant}, M);
         end
 
+        % Generate deterministic pilot bits for QAM modulation (known pattern)
+        bits_per_pilot = log2(M);
+        % Generate different pilot sequences for each antenna to avoid ambiguity
+        pilot_symbols_mimo = cell(Nt, 1);
+        for tx_ant = 1:Nt
+            % Deterministic pattern, different for each antenna
+            pilot_bits = mod((0:num_pilots*num_ofdm_symbols*bits_per_pilot-1) + tx_ant*100, 2);
+            pilot_qam_symbols = qam_modulate(pilot_bits, M);
+            pilot_symbols_matrix = reshape(pilot_qam_symbols, num_pilots, num_ofdm_symbols);
+            pilot_symbols_mimo{tx_ant} = pilot_symbols_matrix;
+        end
+
         % Create OFDM symbols with pilots for each antenna
         freq_symbols_mimo = zeros(N, num_ofdm_symbols, Nt);
         for tx_ant = 1:Nt
@@ -90,9 +102,9 @@ for trial = 1:num_trials
                 freq_symbols_mimo(data_indices, sym_idx, tx_ant) = ...
                     tx_qam_data_mimo{tx_ant}(data_start:data_end);
 
-                % Pilot symbols (known: BPSK, alternating)
-                pilot_values = (1 - 2*mod(sym_idx, 2)) * ones(num_pilots, 1);
-                freq_symbols_mimo(pilot_indices, sym_idx, tx_ant) = pilot_values;
+                % Pilot symbols (known: QAM, deterministic pattern)
+                freq_symbols_mimo(pilot_indices, sym_idx, tx_ant) = ...
+                    pilot_symbols_mimo{tx_ant}(:, sym_idx);
             end
         end
 
@@ -237,14 +249,19 @@ for trial = 1:num_trials
         tx_bits_siso = generate_data(num_ofdm_symbols * bits_per_data_symbol);
         tx_qam_data_siso = qam_modulate(tx_bits_siso, M);
 
+        % Generate deterministic pilot bits for QAM modulation (known pattern)
+        pilot_bits_siso = mod((0:num_pilots*num_ofdm_symbols*bits_per_pilot-1), 2);
+        pilot_qam_symbols_siso = qam_modulate(pilot_bits_siso, M);
+        pilot_symbols_matrix_siso = reshape(pilot_qam_symbols_siso, num_pilots, num_ofdm_symbols);
+
         freq_symbols_siso = zeros(N, num_ofdm_symbols);
         for sym_idx = 1:num_ofdm_symbols
             data_start = (sym_idx - 1) * num_data + 1;
             data_end = sym_idx * num_data;
             freq_symbols_siso(data_indices, sym_idx) = tx_qam_data_siso(data_start:data_end);
 
-            pilot_values = (1 - 2*mod(sym_idx, 2)) * ones(num_pilots, 1);
-            freq_symbols_siso(pilot_indices, sym_idx) = pilot_values;
+            % Pilot symbols (known: QAM, deterministic pattern)
+            freq_symbols_siso(pilot_indices, sym_idx) = pilot_symbols_matrix_siso(:, sym_idx);
         end
 
         tx_signal_siso = ofdm_modulate(freq_symbols_siso, cp_length);
