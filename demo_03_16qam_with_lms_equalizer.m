@@ -62,7 +62,7 @@ rx_symbols = add_awgn(rx_symbols_mp, snr_db);
 % LMS Equalization with training
 fprintf('Running LMS equalizer...\n');
 [equalized_symbols, weights] = lms_equalizer(rx_symbols, training_symbols, ...
-    step_size, num_taps, 'decision', M);
+    step_size, num_taps, M);
 
 % Extract data symbols (skip training)
 equalized_data = equalized_symbols(training_length + 1 : end);

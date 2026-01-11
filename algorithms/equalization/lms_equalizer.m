@@ -1,14 +1,11 @@
-function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size, num_taps, mode, M)
+function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size, num_taps, M)
 % LMS_EQUALIZER LMS (Least Mean Squares) adaptive equalizer
 %
 %   [EQUALIZED, WEIGHTS] = LMS_EQUALIZER(RX_SIGNAL, TRAINING_SEQ, STEP_SIZE, NUM_TAPS)
-%   performs adaptive equalization using LMS algorithm.
+%   performs adaptive equalization using LMS algorithm with training sequence
+%   followed by decision-directed adaptation.
 %
-%   [EQUALIZED, WEIGHTS] = LMS_EQUALIZER(..., MODE) specifies the mode:
-%       'training' - Use training sequence only (default)
-%       'decision' - Use decision-directed mode after training
-%
-%   [EQUALIZED, WEIGHTS] = LMS_EQUALIZER(..., MODE, M) specifies the modulation
+%   [EQUALIZED, WEIGHTS] = LMS_EQUALIZER(..., M) specifies the modulation
 %   order M for decision-directed mode. M must be a power of 2 (4, 16, 64, etc.).
 %   Default is 4 (QPSK) for backward compatibility.
 %
@@ -17,8 +14,6 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
 %       training_seq - Training sequence (known symbols for adaptation)
 %       step_size    - LMS step size (mu) - controls convergence speed
 %       num_taps     - Number of equalizer taps (integer)
-%       mode         - Optional: 'training' or 'decision' (string,
-%                      default: 'training')
 %       M            - Optional: Modulation order for decision-directed mode
 %                      (default: 4 for QPSK)
 %
@@ -33,7 +28,7 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
 %       tx = qpsk_modulate(randi([0,1], 1, 1000));
 %       rx = multipath_channel(tx, [1, 0.5, 0.3]);
 %       training = tx(1:100);
-%       [eq_out, w] = lms_equalizer(rx, training, 0.01, 7);
+%       [eq_out, w] = lms_equalizer(rx, training, 0.01, 7, 4);
 %
 
     if nargin < 4
@@ -41,10 +36,6 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
     end
     
     if nargin < 5
-        mode = 'training';
-    end
-    
-    if nargin < 6
         M = 4;  % Default to QPSK for backward compatibility
     end
     
@@ -84,7 +75,7 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
     end
     
     % Decision-directed mode
-    if strcmpi(mode, 'decision') && length(rx_signal) > training_length
+    if length(rx_signal) > training_length
         % Generate constellation points for M-QAM
         % Use same normalization as qam_modulate (energy = 1)
         sqrt_M = sqrt(M);
@@ -99,7 +90,7 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
         current_energy = 2*(M-1)/3;
         constellation = constellation * sqrt(1 / current_energy);
         
-        % Simple hard decision for continuation
+        % Decision-directed adaptation
         for n = training_length + 1 : length(rx_signal)
             % Input vector
             input_vec = padded_rx(n : n + num_taps - 1);
@@ -118,12 +109,6 @@ function [equalized, weights] = lms_equalizer(rx_signal, training_seq, step_size
             
             % LMS weight update
             weights = weights + step_size * e * conj(input_vec);
-        end
-    else
-        % Just equalize remaining samples without adaptation
-        for n = training_length + 1 : length(rx_signal)
-            input_vec = padded_rx(n : n + num_taps - 1);
-            equalized(n) = weights' * input_vec;
         end
     end
 end
