@@ -1,5 +1,6 @@
 # Layer 1 (Physical Layer) algorithms for telecommunications systems
 
+**NOTE:** Work still in progress. Implementation and demos to be consolidated.<br>
 A project for developing and optimizing Layer 1 (Physical Layer) algorithms for telecommunications systems using GNU Octave.
 
 ## Overview
